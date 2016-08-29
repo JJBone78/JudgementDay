@@ -1,0 +1,85 @@
+using UnityEngine;
+using System.Collections;
+using System.Linq;
+
+public class CursorManager : MonoBehaviour, ICursorManager {
+
+	private CustomCursor[] Cursors;
+	private CustomCursor currentCursor;
+	private float cursorSize = 20.0f;
+	
+	private bool m_ShowCursor = false;
+	
+	public static CursorManager main;
+	
+	void Awake()
+	{
+		main = this;
+		#if UNITY_5
+		Cursor.visible = false;    //    Or whatever value it was
+		#else
+		Screen.showCursor = false;
+		#endif
+		//Screen.showCursor = false;
+	}
+	
+	void Start()
+	{
+        var temp = GameObject.FindGameObjectWithTag("Cursors");
+        var temp2 = GameObject.FindGameObjectWithTag("Cursors").GetComponents<CustomCursor>() as CustomCursor[];
+        Debug.Log("a");
+        //CustomCursor[] temp = GameObject.FindGameObjectWithTag("Cursors").GetComponents<CustomCursor>();
+        //      Cursors = new CustomCursor[temp.Length];
+
+        //foreach (CustomCursor c in temp)
+        //{
+        //	Cursors[c.ID] = c;
+        //}
+        //if(Cursors.Length != 0)
+        //currentCursor = Cursors[0];
+
+
+    }
+
+    void Update()
+	{
+		if (currentCursor.IsAnimated)
+		{
+			currentCursor.Animate (Time.deltaTime);
+		}
+	}
+	
+	public void UpdateCursor(InteractionState interactionState)
+	{	
+		currentCursor = Cursors[(int)interactionState];		
+	}
+	
+	void OnGUI()
+	{
+		if (m_ShowCursor)
+		{
+			GUI.depth = -2;
+			//Draw Cursor
+			float offset;
+			if (currentCursor.CenterTexture)
+			{
+				offset = cursorSize;
+			}
+			else
+			{
+				offset = 0;
+			}
+			GUI.DrawTexture (new Rect(Input.mousePosition.x-(offset/2), Screen.height-Input.mousePosition.y-(offset/2), cursorSize, cursorSize), currentCursor.GetCursorPicture());
+		}
+	}
+	
+	public void HideCursor()
+	{
+		m_ShowCursor = false;
+	}
+	
+	public void ShowCursor()
+	{
+		m_ShowCursor = true;
+	}
+}

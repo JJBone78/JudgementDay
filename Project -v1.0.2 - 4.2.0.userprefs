@@ -1,0 +1,15 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts - In Game\Cursors\CursorManager.cs">
+    <Files>
+      <File FileName="Assets\Scripts - Menus\LevelLoader.cs" Line="66" Column="1" />
+      <File FileName="Assets\Scripts - In Game\Cursors\CursorManager.cs" Line="30" Column="3" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="D:\PROJECT\PROGRAMMING\RTS\original\Assets\Scripts - Menus\LevelLoader.cs" line="66" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
