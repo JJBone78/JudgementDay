@@ -16,12 +16,10 @@ public class BuildingBeingPlaced : MonoBehaviour {
 		get
 		{
 			return ((BoxCollider)GetComponent<Collider>()).center;
-			//return ((BoxCollider)collider).center; //obsolete?!
 		}
 		private set
 		{
 			((BoxCollider)GetComponent<Collider>()).center = value;
-			//((BoxCollider)collider).center = value;
 		}
 	}
 	
@@ -30,12 +28,10 @@ public class BuildingBeingPlaced : MonoBehaviour {
 		get
 		{
 			return ((BoxCollider)GetComponent<Collider>()).size;
-			//return ((BoxCollider)collider).size;
 		}
 		private set
 		{
 			((BoxCollider)GetComponent<Collider>()).size = value;
-			//((BoxCollider)collider).size = value;
 		}
 	}
 
@@ -43,7 +39,7 @@ public class BuildingBeingPlaced : MonoBehaviour {
 	void Start () 
 	{
 		//Get materials from current renderer and any child renderers
-		if (GetComponent<Renderer>() != null) //if (renderer != null)
+		if (GetComponent<Renderer>() != null)
 		{
 			m_BuildingMaterials.AddRange (GetComponent<Renderer>().materials);
 		}

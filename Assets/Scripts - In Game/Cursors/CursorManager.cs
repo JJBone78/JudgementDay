@@ -4,8 +4,8 @@ using System.Linq;
 
 public class CursorManager : MonoBehaviour, ICursorManager {
 
-	private CustomCursor[] Cursors;
-	private CustomCursor currentCursor;
+	private Cursor[] Cursors;
+	private Cursor currentCursor;
 	private float cursorSize = 20.0f;
 	
 	private bool m_ShowCursor = false;
@@ -15,33 +15,25 @@ public class CursorManager : MonoBehaviour, ICursorManager {
 	void Awake()
 	{
 		main = this;
-		#if UNITY_5
-		Cursor.visible = false;    //    Or whatever value it was
-		#else
-		Screen.showCursor = false;
-		#endif
-		//Screen.showCursor = false;
+		UnityEngine.Cursor.visible = false;
 	}
 	
 	void Start()
-	{
-        var temp = GameObject.FindGameObjectWithTag("Cursors");
-        var temp2 = GameObject.FindGameObjectWithTag("Cursors").GetComponents<CustomCursor>() as CustomCursor[];
-        Debug.Log("a");
-        //CustomCursor[] temp = GameObject.FindGameObjectWithTag("Cursors").GetComponents<CustomCursor>();
-        //      Cursors = new CustomCursor[temp.Length];
-
-        //foreach (CustomCursor c in temp)
-        //{
-        //	Cursors[c.ID] = c;
-        //}
-        //if(Cursors.Length != 0)
-        //currentCursor = Cursors[0];
-
-
-    }
-
-    void Update()
+	{	
+		Cursor[] temp = GameObject.FindGameObjectWithTag ("Cursors").GetComponents<Cursor>();
+		Cursors = new Cursor[temp.Length];
+		
+		foreach (Cursor c in temp)
+		{
+			Cursors[c.ID] = c;
+		}
+		
+		currentCursor = Cursors[0];
+		
+		
+	}
+	
+	void Update()
 	{
 		if (currentCursor.IsAnimated)
 		{

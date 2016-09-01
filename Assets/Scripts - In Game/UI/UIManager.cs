@@ -373,15 +373,7 @@ public class UIManager : MonoBehaviour, IUIManager {
 			if (m_PositionValid)
 			{
 				GameObject newObject = (GameObject)Instantiate (m_ItemBeingPlaced.Prefab, m_ObjectBeingPlaced.transform.position, m_ItemBeingPlaced.Prefab.transform.rotation);
-				//solution for deprecated AddComponent(string)
-				var type = System.Type.GetType(m_ItemBeingPlaced.ObjectType.ToString());
-				if (type != null && typeof(Component).IsAssignableFrom(type))
-					newObject.AddComponent(type);
-
-
-
-				//newObject.AddComponent<m_ItemBeingPlaced.ObjectType()>();
-				//newObject.AddComponent(m_ItemBeingPlaced.ObjectType.ToString ());
+				UnityEngineInternal.APIUpdaterRuntimeServices.AddComponent(newObject, "Assets/Scripts - In Game/UI/UIManager.cs (376,5)", m_ItemBeingPlaced.ObjectType.ToString ());
 				newObject.layer = 12;
 				newObject.tag = "Player";
 				

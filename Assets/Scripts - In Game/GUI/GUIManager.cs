@@ -1,11 +1,24 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
-public class GUIManager : MonoBehaviour, IGUIManager {
-	
-	//Singleton
-	public static GUIManager main;
+public class GUIManager : MonoBehaviour, IGUIManager
+{
+    public static float _global_displayed_hour = 7.0F;
+    public static float _global_displayed_minute = 0;
+    public static float _global_game_speed = 1.0F;
+    public static DayNightShift _global_day_night_shift = DayNightShift.Day;
+    private float _timer_count = 0;
+    private float _timer_start = 0;//-13; //start game at 07:00 AM ingame time
+    public static string _global_game_time = "";
+    private GUIStyle _global_clock_style = new GUIStyle();
+
+
+
+
+    //Singleton
+    public static GUIManager main;
 	
 	//Member Variables
 	private Rect m_MiniMapRect;
@@ -21,9 +34,16 @@ public class GUIManager : MonoBehaviour, IGUIManager {
 	private ITypeButton[] m_TypeButtons = new TypeButton[5];
 	private IMaintenanceButtons[] m_MaintenanceButtons = new IMaintenanceButtons[3];
 	private IManager m_Manager;
-	
-	//Properties
-	public float MainMenuWidth
+
+
+    public enum DayNightShift
+    {
+        Day = 0,
+        Night = 1
+    };
+
+    //Properties
+    public float MainMenuWidth
 	{
 		get
 		{
@@ -141,12 +161,79 @@ public class GUIManager : MonoBehaviour, IGUIManager {
 		//Resolve Manager
 		m_Manager = ManagerResolver.Resolve<IManager>();
 	}
-	
+
+    bool _hour_changed = false;
 	// Update is called once per frame
 	void Update () 
 	{
-		//Tell all items that are being built to update themselves
-		GUIEvents.TellItemsToUpdate(Time.deltaTime);
+        if (Input.GetKeyUp(KeyCode.KeypadPlus)) //increase or decrease game speed based on numpad +/-
+        {
+            if (_global_game_speed == 0.1F)
+                _global_game_speed = 0.3F;
+            else if (_global_game_speed == 0.3F)
+                _global_game_speed = 0.5F;
+            else if (_global_game_speed == 0.5F)
+                _global_game_speed = 0.7F;
+            else if (_global_game_speed == 0.7F)
+                _global_game_speed = 0.9F;
+            else if (_global_game_speed == 0.9F)
+                _global_game_speed = 1.0F;
+            else if (_global_game_speed == 1.0F)
+                _global_game_speed = 2.0F;
+            else if (_global_game_speed == 2.0F)
+                _global_game_speed = 3.0F;
+            else if (_global_game_speed == 3.0F)
+                _global_game_speed = 4.0F;
+            else if (_global_game_speed == 4.0F)
+                _global_game_speed = 5.0F;
+        }
+        if (Input.GetKeyUp(KeyCode.KeypadMinus))
+        {
+            if (_global_game_speed == 0.3F)
+                _global_game_speed = 0.1F;
+            else if (_global_game_speed == 0.5F)
+                _global_game_speed = 0.3F;
+            else if (_global_game_speed == 0.7F)
+                _global_game_speed = 0.5F;
+            else if (_global_game_speed == 0.9F)
+                _global_game_speed = 0.7F;
+            else if (_global_game_speed == 1.0F)
+                _global_game_speed = 0.9F;
+            else if (_global_game_speed == 2.0F)
+                _global_game_speed = 1.0F;
+            else if (_global_game_speed == 3.0F)
+                _global_game_speed = 2.0F;
+            else if (_global_game_speed == 4.0F)
+                _global_game_speed = 3.0F;
+            else if (_global_game_speed == 5.0F)
+                _global_game_speed = 4.0F;
+        }
+        Time.timeScale = _global_game_speed; //game speed
+
+        _timer_count = (Time.time - _timer_start) / 2;
+
+        
+
+        if (((Mathf.Floor(_timer_count % 6)) * 10) == 0 && _hour_changed)
+        {
+            if (_global_displayed_hour > 22)
+                _global_displayed_hour = 0;
+            else
+                _global_displayed_hour += 1;
+            _hour_changed = false;
+        }
+        if (((Mathf.Floor(_timer_count % 6)) * 10) == 10)
+            _hour_changed = true;
+        _global_displayed_minute = (Mathf.Floor(_timer_count % 6)) * 10;
+
+
+
+
+        _global_game_time = string.Format("{0:00}:{1:00}", _global_displayed_hour, _global_displayed_minute);
+      
+
+        //Tell all items that are being built to update themselves
+        GUIEvents.TellItemsToUpdate(Time.deltaTime);
 		
 		if (Input.GetKeyDown ("r"))
 		{
@@ -176,9 +263,15 @@ public class GUIManager : MonoBehaviour, IGUIManager {
 		
 		//Draw Money Label
 		GUI.Label (m_AboveMiniMapBG, m_Manager.Money.ToString (), GUIStyles.MoneyLabel);
-	}
-	
-	public bool IsWithin(Vector3 worldPos)
+
+        _global_clock_style.normal.textColor = Color.green;
+        _global_clock_style.fontStyle = FontStyle.Bold;
+        _global_clock_style.fontSize = 18;
+        GUI.Label(new Rect(0, 0, 100, 50), _global_game_time, _global_clock_style);
+
+    }
+
+    public bool IsWithin(Vector3 worldPos)
 	{
 		Vector3 screenPos = Camera.main.WorldToScreenPoint (worldPos);
 		Vector3 realScreenPos = new Vector3(screenPos.x, Screen.height-screenPos.y, screenPos.z);
