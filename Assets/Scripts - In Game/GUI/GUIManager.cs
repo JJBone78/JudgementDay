@@ -8,10 +8,9 @@ public class GUIManager : MonoBehaviour, IGUIManager
     public static float _global_displayed_hour = 7.0F;
     public static float _global_displayed_minute = 0;
     public static float _global_game_speed = 1.0F;
-    public static DayNightShift _global_day_night_shift = DayNightShift.Day;
-    private float _timer_count = 0;
-    private float _timer_start = 0;//-13; //start game at 07:00 AM ingame time
     public static string _global_game_time = "";
+    public static DayNightShift _global_day_night_shift = DayNightShift.Day;
+    public Font _digital_font;
     private GUIStyle _global_clock_style = new GUIStyle();
 
 
@@ -162,9 +161,7 @@ public class GUIManager : MonoBehaviour, IGUIManager
 		m_Manager = ManagerResolver.Resolve<IManager>();
 	}
 
-    bool _hour_changed = false;
-	// Update is called once per frame
-	void Update () 
+  	void Update () 
 	{
         if (Input.GetKeyUp(KeyCode.KeypadPlus)) //increase or decrease game speed based on numpad +/-
         {
@@ -210,21 +207,21 @@ public class GUIManager : MonoBehaviour, IGUIManager
         }
         Time.timeScale = _global_game_speed; //game speed
 
-        _timer_count = (Time.time - _timer_start) / 2;
+        //_timer_count = (Time.time - _timer_start) / 2;
 
         
 
-        if (((Mathf.Floor(_timer_count % 6)) * 10) == 0 && _hour_changed)
-        {
-            if (_global_displayed_hour > 22)
-                _global_displayed_hour = 0;
-            else
-                _global_displayed_hour += 1;
-            _hour_changed = false;
-        }
-        if (((Mathf.Floor(_timer_count % 6)) * 10) == 10)
-            _hour_changed = true;
-        _global_displayed_minute = (Mathf.Floor(_timer_count % 6)) * 10;
+        //if (((Mathf.Floor(_timer_count % 6)) * 10) == 0 && _hour_changed)
+        //{
+        //    if (_global_displayed_hour > 22)
+        //        _global_displayed_hour = 0;
+        //    else
+        //        _global_displayed_hour += 1;
+        //    _hour_changed = false;
+        //}
+        //if (((Mathf.Floor(_timer_count % 6)) * 10) == 10)
+        //    _hour_changed = true;
+        //_global_displayed_minute = (Mathf.Floor(_timer_count % 6)) * 10;
 
 
 
@@ -262,13 +259,14 @@ public class GUIManager : MonoBehaviour, IGUIManager
 		}
 		
 		//Draw Money Label
-		GUI.Label (m_AboveMiniMapBG, m_Manager.Money.ToString (), GUIStyles.MoneyLabel);
-
+		GUI.Label(m_AboveMiniMapBG, m_Manager.Money.ToString (), GUIStyles.MoneyLabel);
+        //draw in-game clock
         _global_clock_style.normal.textColor = Color.green;
         _global_clock_style.fontStyle = FontStyle.Bold;
         _global_clock_style.fontSize = 18;
-        GUI.Label(new Rect(0, 0, 100, 50), _global_game_time, _global_clock_style);
-
+        if (_digital_font != null)
+            _global_clock_style.font = _digital_font;
+        GUI.Label(new Rect(0, 0, 200, 50), _global_game_time, _global_clock_style);
     }
 
     public bool IsWithin(Vector3 worldPos)

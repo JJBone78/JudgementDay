@@ -20,13 +20,13 @@ public class MiniMapController : MonoBehaviour, IMiniMapController {
 	
 	private ICamera m_MainCamera;
 	
-	private Material mat;
+	//private Material mat;
 	
 	void Awake()
 	{
 		main = this;
 		
-		mat = GLMatShader.GetGLMaterial ();
+		//mat = GLMatShader.GetGLMaterial ();
 	}
 
 	// Use this for initialization
@@ -176,7 +176,7 @@ public class MiniMapController : MonoBehaviour, IMiniMapController {
 	void OnPostRender()
 	{
 		GL.PushMatrix ();
-		mat.SetPass (0);
+		//mat.SetPass (0);
 		GL.LoadPixelMatrix();
 		GL.Color (Color.white);
 		GL.Begin(GL.LINES);
