@@ -375,7 +375,6 @@ public class UIManager : MonoBehaviour, IUIManager
                 {
                     GameObject newObject = (GameObject)Instantiate(m_ItemBeingPlaced.Prefab, m_ObjectBeingPlaced.transform.position, m_ItemBeingPlaced.Prefab.transform.rotation);
                     newObject.AddComponent(m_ItemBeingPlaced.ObjectType);
-                    //UnityEngineInternal.APIUpdaterRuntimeServices.AddComponent(newObject, "Assets/Scripts - In Game/UI/UIManager.cs (376,5)", m_ItemBeingPlaced.ObjectType.ToString());
                     newObject.layer = 12;
                     newObject.tag = "Player";
 

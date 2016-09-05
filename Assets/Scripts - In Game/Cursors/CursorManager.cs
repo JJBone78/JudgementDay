@@ -6,7 +6,7 @@ public class CursorManager : MonoBehaviour, ICursorManager {
 
 	private Cursor[] Cursors;
 	private Cursor currentCursor;
-	private float cursorSize = 20.0f;
+	private float cursorSize = 32.0f;
 	
 	private bool m_ShowCursor = false;
 	
