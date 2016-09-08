@@ -46,7 +46,6 @@ public class MainCamera : MonoBehaviour, ICamera {
     // Update is called once per frame
     void Update()
     {
-
         if (Input.GetMouseButton(2))
         {
 
@@ -55,7 +54,6 @@ public class MainCamera : MonoBehaviour, ICamera {
                 transform.position -= new Vector3(Input.GetAxisRaw("Mouse X") * dragSpeed,
                                            0.0f, Input.GetAxisRaw("Mouse Y") * dragSpeed);
             }
-
             else if (Input.GetAxis("Mouse X") < 0)
             {
                 transform.position -= new Vector3(Input.GetAxisRaw("Mouse X") * dragSpeed,
