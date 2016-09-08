@@ -15,11 +15,11 @@ public class MainCamera : MonoBehaviour, ICamera {
 	public float ScrollSpeed = 8.0f;
 	public float ScrollAcceleration = 30.0f;
 	
-	public float ZoomRate = 500.0f;
+	public float ZoomRate = 1200.0f;
 	
 	private float m_MenuWidth;
-	
-	private bool canWeScroll = true;
+    private float dragSpeed = 11f;
+    private bool canWeScroll = true;
 	
 	public GameObject StartPoint;
 	
@@ -42,14 +42,27 @@ public class MainCamera : MonoBehaviour, ICamera {
 		//Set up camera rotation
 		transform.rotation = Quaternion.Euler (90-AngleOffset, 0, 0);
 	}
-	
-	// Update is called once per frame
-	void Update () 
-	{
-		
-	}
-	
-	public void Pan(object sender, ScreenEdgeEventArgs e)
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetMouseButton(2))
+        {
+
+            if (Input.GetAxis("Mouse X") > 0)
+            {
+                transform.position -= new Vector3(Input.GetAxisRaw("Mouse X") * dragSpeed,
+                                           0.0f, Input.GetAxisRaw("Mouse Y") * dragSpeed);
+            }
+            else if (Input.GetAxis("Mouse X") < 0)
+            {
+                transform.position -= new Vector3(Input.GetAxisRaw("Mouse X") * dragSpeed,
+                                           0.0f, Input.GetAxisRaw("Mouse Y") * dragSpeed);
+            }
+        }
+    }
+
+    public void Pan(object sender, ScreenEdgeEventArgs e)
 	{
 		if (canWeScroll)
 		{
