@@ -1,1 +1,0 @@
-Assets/Resources/Models/GRI/Units/Vehicles/MCV/mcv_attached.max
