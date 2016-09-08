@@ -65,6 +65,7 @@ Temp
 *.sln
 Library/*
 !Library/*.asset
+Library/*.log
 /[Ll]ibrary/
 /[Tt]emp/
 /[Oo]bj/
