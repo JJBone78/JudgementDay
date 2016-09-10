@@ -47,37 +47,37 @@ public static class GUIStyles
 	//Dynamic Styles-------------------------------------------------------
 	
 	//Type button style
-	public static GUIStyle CreateTypeButtonStyle()
-	{
-		GUIStyle style = new GUIStyle();
+	//public static GUIStyle CreateTypeButtonStyle()
+	//{
+	//	GUIStyle style = new GUIStyle();
 		
-		style.normal.background = GUITextures.TypeButtonNormal;
-		style.normal.textColor = Color.white;
+	//	style.normal.background = GUITextures.TypeButtonNormal;
+	//	style.normal.textColor = Color.white;
 		
-		style.hover.background = GUITextures.TypeButtonHover;
-		style.hover.textColor = Color.white;
+	//	style.hover.background = GUITextures.TypeButtonHover;
+	//	style.hover.textColor = Color.white;
 		
-		style.alignment = TextAnchor.MiddleCenter;
-		style.fontSize = 30;
+	//	style.alignment = TextAnchor.MiddleCenter;
+	//	style.fontSize = 30;
 		
-		return style;
-	}
+	//	return style;
+	//}
 	
-	public static GUIStyle CreateQueueButtonStyle()
-	{
-		GUIStyle style = new GUIStyle();
+	//public static GUIStyle CreateQueueButtonStyle()
+	//{
+	//	GUIStyle style = new GUIStyle();
 		
-		style.normal.background = GUITextures.TypeButtonNormal;
-		style.normal.textColor = Color.white;
+	//	style.normal.background = GUITextures.TypeButtonNormal;
+	//	style.normal.textColor = Color.white;
 		
-		style.hover.background = GUITextures.TypeButtonHover;
-		style.hover.textColor = Color.white;
+	//	style.hover.background = GUITextures.TypeButtonHover;
+	//	style.hover.textColor = Color.white;
 		
-		style.alignment = TextAnchor.MiddleCenter;
-		style.fontSize = 30;
+	//	style.alignment = TextAnchor.MiddleCenter;
+	//	style.fontSize = 30;
 		
-		return style;
-	}
+	//	return style;
+	//}
 	
 	public static GUIStyle CreateQueueContentButtonStyle()
 	{

@@ -13,16 +13,18 @@ public class DragSelect : MonoBehaviour {
 	
 	private IGUIManager m_GuiManager;
 	private ISelectedManager m_SelectedManager;
-	
-	private float m_GuiWidth = 0;
-	
-	void Awake()
-	{
-		GUIEvents.MenuWidthChanged += MenuWidthChanged;
-	}
 
-	// Use this for initialization
-	void Start () 
+    private float _gui_width = 0;
+    private float _gui_height = 0;
+
+    void Awake()
+	{
+        GUIEvents.MenuWidthChanged += MenuWidthChanged;
+        GUIEvents.MenuHeightChanged += MenuHeightChanged;
+    }
+
+    // Use this for initialization
+    void Start () 
 	{
 		m_DragStyle.normal.background = TextureGenerator.MakeTexture (0.8f, 0.8f, 0.8f, 0.3f);
 		m_DragStyle.border.bottom = 1;
@@ -63,9 +65,9 @@ public class DragSelect : MonoBehaviour {
 	
 	public void LeftButtonPressed(object sender, MouseEventArgs e)
 	{
-		if (e.button == 0)
+        if (e.button == 0)
 		{
-			if (!e.buttonUp && e.X < Screen.width-m_GuiWidth)
+			if (!e.buttonUp && e.X < Screen.width - _gui_width && e.Y > Screen.height - (Screen.height - _gui_height))
 			{
 				m_DragLocationStart = new Vector2(e.X, e.Y);
 				m_CheckDeselect = true;
@@ -90,23 +92,27 @@ public class DragSelect : MonoBehaviour {
 		Rect rect = new Rect(minX, minY, maxX-minX, maxY-minY);
 		
 		//Don't let the dragged area interfere with the gui
-		if (rect.xMin > Screen.width-m_GuiWidth)
-		{
-			rect.xMin = Screen.width-m_GuiWidth;
-		}
-		
-		if (rect.xMax > Screen.width-m_GuiWidth)
-		{
-			rect.xMax = Screen.width-m_GuiWidth;
-		}
-		
-		m_GuiManager.DragArea = new Rect(maxX, maxY, minX-maxX, minY-maxY);
+		if (rect.xMin > Screen.width-_gui_width)
+			rect.xMin = Screen.width-_gui_width;
+        if (rect.yMin > Screen.height - _gui_height)
+            rect.yMin = Screen.height - _gui_height;
+        if (rect.xMax > Screen.width - _gui_width)
+            rect.xMax = Screen.width - _gui_width;
+	    if (rect.yMax > Screen.height - _gui_height)
+	        rect.yMax = Screen.height - _gui_height;
+
+        m_GuiManager.DragArea = new Rect(maxX, maxY, minX-maxX, minY-maxY);
 		
 		GUI.Box (rect, "", style);
 	}
 	
-	public void MenuWidthChanged(float newWidth)
+	public void MenuWidthChanged(float _new_width)
 	{
-		m_GuiWidth = newWidth;
+		_gui_width = _new_width;
 	}
+
+    public void MenuHeightChanged(float _new_height)
+    {
+        _gui_height = _new_height;
+    }
 }

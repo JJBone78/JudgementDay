@@ -8,18 +8,21 @@ public class GUIEvents
 	public delegate void MaintenanceButton(object sender, MaintenanceButtonEventArgs e);
 	
 	public delegate void ItemUpdate(float frameTime);
-	
-	public delegate void MenuWidthChange(float newWidth);
-	
-	public static event TypeButton TypeButtonChanged; 
+
+    public delegate void MenuWidthChange(float newWidth);
+    public delegate void MenuHeightChange(float newWidth);
+
+
+    public static event TypeButton TypeButtonChanged; 
 	public static event QueueButton QueueButtonChanged;
 	public static event MaintenanceButton MaintenanceButtonChanged;
 	
 	public static event ItemUpdate ItemUpdateTimer;
-	
-	public static event MenuWidthChange MenuWidthChanged;
-	
-	public static void TypeButtonPressed(object sender, ButtonType button)
+
+    public static event MenuWidthChange MenuWidthChanged;
+    public static event MenuHeightChange MenuHeightChanged;
+
+    public static void TypeButtonPressed(object sender, ButtonType button)
 	{
 		if (TypeButtonChanged != null)
 		{
@@ -58,4 +61,12 @@ public class GUIEvents
 			MenuWidthChanged(newWidth);
 		}
 	}
+
+    public static void MenuHeightHasChanged(float newHeight)
+    {
+        if (MenuHeightChanged != null)
+        {
+            MenuHeightChanged(newHeight);
+        }
+    }
 }

@@ -3,8 +3,8 @@ using System.Collections;
 
 public interface IButton 
 {
-	bool Selected { get; }
+	//bool Selected { get; }
 	
-	void Execute();
+	//void Execute();
 	
 }

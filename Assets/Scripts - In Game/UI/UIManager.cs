@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour, IUIManager
 
     //Width of GUI menu
     private float m_GuiWidth;
+    private float m_GuiHeight;
 
     //Action Variables
     private HoverOver hoverOver = HoverOver.Land;
@@ -75,6 +76,7 @@ public class UIManager : MonoBehaviour, IUIManager
 
         //Attach gui width changed event	
         GUIEvents.MenuWidthChanged += MenuWidthChanged;
+        GUIEvents.MenuHeightChanged += MenuHeightChanged;
 
         //Loader.main.FinishedLoading (this);
     }
@@ -103,9 +105,8 @@ public class UIManager : MonoBehaviour, IUIManager
         //Handle all non event, and non gui UI elements here
         hoverOver = HoverOver.Land;
         InteractionState interactionState = InteractionState.Nothing;
-
-        //Are we hovering over the GUI or the main screen?
-        if (Input.mousePosition.x < Screen.width - m_GuiWidth)
+       //Are we hovering over the GUI or the main screen?
+        if (Input.mousePosition.x < Screen.width - (GUIManager._is_right_menu_shown ? m_GuiWidth : 0) && Input.mousePosition.y > Screen.height - (Screen.height - (GUIManager._is_construction_shown ? m_GuiHeight : 0)))
         {
             //We're over the main screen, let's raycast
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -339,7 +340,7 @@ public class UIManager : MonoBehaviour, IUIManager
     private void ButtonClickedHandler(object sender, MouseEventArgs e)
     {
         //If mouse is over GUI then we don't want to process the button clicks
-        if (e.X < Screen.width - m_GuiWidth)
+        if (e.X < Screen.width - (GUIManager._is_right_menu_shown ? m_GuiWidth : 0) && e.Y > Screen.height - (Screen.height - (GUIManager._is_construction_shown ? m_GuiHeight : 0)))
         {
             e.Command();
         }
@@ -533,6 +534,11 @@ public class UIManager : MonoBehaviour, IUIManager
     public void MenuWidthChanged(float newWidth)
     {
         m_GuiWidth = newWidth;
+    }
+
+    public void MenuHeightChanged(float newHeight)
+    {
+        m_GuiHeight = newHeight;
     }
 
     public void UserPlacingBuilding(Item item, Action callbackFunction)

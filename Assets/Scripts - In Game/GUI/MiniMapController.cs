@@ -8,12 +8,13 @@ public class MiniMapController : MonoBehaviour, IMiniMapController {
 	
 	//Minimap rect in pixel space
 	private Rect m_MiniMapRect;
-	
-	//Menu Width (needed to calculate correct viewport in minimap)
-	private float m_MenuWidth;
-	
-	//Vectors for viewport co-ordinates in minimap
-	private Vector3[] m_ViewPortVectors = new Vector3[4];
+
+    //Menu Width (needed to calculate correct viewport in minimap)
+    private float m_MenuWidth;
+    private float m_MenuHeight;
+
+    //Vectors for viewport co-ordinates in minimap
+    private Vector3[] m_ViewPortVectors = new Vector3[4];
 	
 	private float m_zOffSet;
 	private float m_xOffset;
@@ -43,37 +44,40 @@ public class MiniMapController : MonoBehaviour, IMiniMapController {
 		
 	}
 	
-	public void LoadMiniMap(out float guiWidth, out Rect miniMapRect)
+	public void LoadMiniMap(out float guiWidth, out float guiHeight, out Rect miniMapRect)
 	{
 		//Properly configure camera viewport so it's a square and it's in the correct place regardless of resolution
 		//Always want the map to appear 3/4 up the screen, with a height of 1/4.5
 		float aspectRatio = (float)Screen.width/(float)Screen.height;
-		
-		float viewPortY = 3.0f/4.0f;
-		float viewPortHeight = 1.0f/4.5f;
-		
-		//Figure width values based on height values
-		float viewPortWidth = 1.0f/(4.5f*aspectRatio);
-		float viewPortX = 1-(0.25f/aspectRatio);
-		
-		//Assign camera viewport
-		GetComponent<Camera>().rect = new Rect(viewPortX, viewPortY, viewPortWidth, viewPortHeight);
+
+        float viewPortY = (Screen.height - (Screen.height - 46f)) / Screen.height;//float viewPortY = 3.0f/4.0f;
+        float viewPortHeight = 122f / Screen.height;//float viewPortHeight = 1.0f/4.5f;
+
+        //Figure width values based on height values
+        float viewPortWidth = 122f / Screen.width;//float viewPortWidth = 1.0f/(4.5f*aspectRatio);
+        float viewPortX = (GUIManager._minimap_x_coord + 28) / Screen.width;//float viewPortX = 1-(0.25f/aspectRatio);
+
+        //Assign camera viewport
+        GetComponent<Camera>().rect = new Rect(viewPortX, viewPortY, viewPortWidth, viewPortHeight);
 		miniMapRect = GetComponent<Camera>().rect;
 		
 		//Assign pixel rect
 		m_MiniMapRect = new Rect(viewPortX*Screen.width, viewPortY*Screen.height, viewPortWidth*Screen.width, viewPortHeight*Screen.height);
 		
 		//Now we have the minimap size, determine how wide the GUI should be
-		float miniMapX = Camera.main.ViewportToScreenPoint(new Vector3(viewPortX, viewPortY, 0)).x;
-		float miniMapX2 = Camera.main.ViewportToScreenPoint(new Vector3(viewPortX+viewPortWidth, viewPortY, 0)).x;
-		float miniMapWidth = miniMapX2 - miniMapX;
-		float miniMapGap = Screen.width-miniMapX2;
-		
-		guiWidth = miniMapWidth+(2*miniMapGap);
+		//float miniMapX = Camera.main.ViewportToScreenPoint(new Vector3(viewPortX, viewPortY, 0)).x;
+		//float miniMapX2 = Camera.main.ViewportToScreenPoint(new Vector3(viewPortX+viewPortWidth, viewPortY, 0)).x;
+		//float miniMapWidth = miniMapX2 - miniMapX;
+		//float miniMapGap = Screen.width-miniMapX2;
+
+	    guiWidth = GUIManager._is_right_menu_shown ? 178 : 0;//miniMapWidth+(2*miniMapGap); //RIGHT UNCLICKABLE AREA, FOR MENU
 		m_MenuWidth = guiWidth;
-		ManagerResolver.Resolve<ICamera>().SetMenuWidth (m_MenuWidth);
-		
-		UpdateViewPort ();
+        guiHeight = GUIManager._is_construction_shown ? 197 : 0; //BOTOM UNCLICKABLE AREA, FOR MENU
+        m_MenuHeight = guiHeight;
+        ManagerResolver.Resolve<ICamera>().SetSideMenuWidth (m_MenuWidth);
+        ManagerResolver.Resolve<ICamera>().SetBottomMenuHeight(m_MenuHeight);
+
+        UpdateViewPort();
 		
 		//Find map bounds
 		RaycastHit hit;
@@ -116,18 +120,18 @@ public class MiniMapController : MonoBehaviour, IMiniMapController {
 	
 	private void UpdateViewPort()
 	{
-		//Need to find co-ordinates for the viewing area within the camera viewport
+		//Need to find co-ordinates for the viewing area within the camera viewport (shown as white tetragon displayed on minimap)
 		//Bottom left
-		Ray ray1 = Camera.main.ScreenPointToRay (new Vector3(0,0,0));
+		Ray ray1 = Camera.main.ScreenPointToRay (new Vector3(0, Screen.height - m_MenuHeight, 0));
 		
 		//Top left
-		Ray ray2 = Camera.main.ScreenPointToRay (new Vector3(0, Screen.height-1, 0));
+		Ray ray2 = Camera.main.ScreenPointToRay (new Vector3(0, 1, 0));
 		
 		//Top right
-		Ray ray3 = Camera.main.ScreenPointToRay (new Vector3(Screen.width-m_MenuWidth, Screen.height-1, 0));
+		Ray ray3 = Camera.main.ScreenPointToRay (new Vector3(Screen.width - m_MenuWidth, 1, 0));
 		
 		//Bottom right
-		Ray ray4 = Camera.main.ScreenPointToRay (new Vector3(Screen.width-m_MenuWidth, 0, 0));
+		Ray ray4 = Camera.main.ScreenPointToRay (new Vector3(Screen.width-m_MenuWidth, Screen.height - m_MenuHeight, 0));
 		
 		//Find world co-ordinates
 		RaycastHit hit;
@@ -156,7 +160,7 @@ public class MiniMapController : MonoBehaviour, IMiniMapController {
 			m_zOffSet = hit.point.z- Camera.main.transform.position.z;
 			float midPointX = hit.point.x;
 			
-			Ray ray6 = Camera.main.ScreenPointToRay (new Vector3((Screen.width-m_MenuWidth)/2, Screen.height/2, 0));
+			Ray ray6 = Camera.main.ScreenPointToRay (new Vector3((Screen.width-m_MenuWidth)/2, Screen.height-m_MenuHeight/2, 0));
 			if (Physics.Raycast (ray6, out hit, Mathf.Infinity, 1 << 16))
 			{
 				m_xOffset = hit.point.x-midPointX;

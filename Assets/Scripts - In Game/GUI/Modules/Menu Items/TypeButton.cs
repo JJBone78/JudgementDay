@@ -15,95 +15,95 @@ public class TypeButton : ITypeButton
 	
 	private string m_Content;
 	
-	public bool Selected
-	{
-		get
-		{
-			return m_Selected;
-		}
-		private set
-		{
-			if (Equals (m_Selected, value))
-			{
-				return;
-			}
+	//public bool Selected
+	//{
+	//	get
+	//	{
+	//		return m_Selected;
+	//	}
+	//	private set
+	//	{
+	//		if (Equals (m_Selected, value))
+	//		{
+	//			return;
+	//		}
 			
-			m_Selected = value;
-			SelectedValueChanged (m_Selected);
-		}
-	}
+	//		m_Selected = value;
+	//		SelectedValueChanged (m_Selected);
+	//	}
+	//}
 	
-	public TypeButton(ButtonType type, Rect menuArea)
-	{
-		m_ButtonType = type;
+	//public TypeButton(ButtonType type, Rect menuArea)
+	//{
+	//	m_ButtonType = type;
 		
-		CalculateSize (menuArea);
+	//	CalculateSize (menuArea);
 		
-		//Create Style
-		m_ButtonStyle = GUIStyles.CreateTypeButtonStyle();
+	//	//Create Style
+	//	m_ButtonStyle = GUIStyles.CreateTypeButtonStyle();
 		
-		//Attach to events
-		GUIEvents.TypeButtonChanged += ButtonPressedEvent;
-	}
+	//	//Attach to events
+	//	GUIEvents.TypeButtonChanged += ButtonPressedEvent;
+	//}
 	
-	private void SelectedValueChanged(bool newValue)
-	{
-		if (newValue)
-		{
-			//Button has been clicked, set to highlight
-			m_ButtonStyle.normal.background = GUITextures.TypeButtonSelected;
-			m_ButtonStyle.hover.background = GUITextures.TypeButtonSelected;
-		}
-		else
-		{
-			//Button has been deselected, remove highlight
-			m_ButtonStyle.normal.background = GUITextures.TypeButtonNormal;
-			m_ButtonStyle.hover.background = GUITextures.TypeButtonHover;
-		}
-	}	
+	//private void SelectedValueChanged(bool newValue)
+	//{
+	//	if (newValue)
+	//	{
+	//		//Button has been clicked, set to highlight
+	//		m_ButtonStyle.normal.background = GUITextures.TypeButtonSelected;
+	//		m_ButtonStyle.hover.background = GUITextures.TypeButtonSelected;
+	//	}
+	//	else
+	//	{
+	//		//Button has been deselected, remove highlight
+	//		m_ButtonStyle.normal.background = GUITextures.TypeButtonNormal;
+	//		m_ButtonStyle.hover.background = GUITextures.TypeButtonHover;
+	//	}
+	//}	
 	
-	public void Execute()
-	{
-		//Draw type button
-		if (GUI.Button (m_ButtonRect, m_Content, m_ButtonStyle))
-		{
-			GUIEvents.TypeButtonPressed (this, m_ButtonType);
-		}
+	//public void Execute()
+	//{
+	//	//Draw type button
+	//	if (GUI.Button (m_ButtonRect, m_Content, m_ButtonStyle))
+	//	{
+	//		GUIEvents.TypeButtonPressed (this, m_ButtonType);
+	//	}
 		
-		if (Selected)
-		{
-			//Draw Queue Buttons
-			foreach (QueueButton queueButton in m_QueueButtons)
-			{
-				queueButton.Execute ();
-			}
-		}
-	}
+	//	if (Selected)
+	//	{
+	//		//Draw Queue Buttons
+	//		foreach (QueueButton queueButton in m_QueueButtons)
+	//		{
+	//			queueButton.Execute ();
+	//		}
+	//	}
+	//}
 	
-	private void ButtonPressedEvent(object sender, TypeButtonEventArgs e)
-	{
-		if (sender == this)
-		{
-			if (Selected)
-			{
-				Selected = false;
-			}
-			else
-			{
-				Selected = true;
+	//private void ButtonPressedEvent(object sender, TypeButtonEventArgs e)
+	//{
+	//	if (sender == this)
+	//	{
+	//		if (Selected)
+	//		{
+	//			Selected = false;
+	//		}
+	//		else
+	//		{
+	//			Selected = true;
 				
-				//Set the first queue button to selected if there is one
-				if (m_QueueButtons.Count > 0)
-				{
-					m_QueueButtons[0].SetSelected ();
-				}
-			}
-		}
-		else
-		{
-			Selected = false;
-		}
-	}
+	//			//Set the first queue button to selected if there is one
+	//			if (m_QueueButtons.Count > 0)
+	//			{
+	//				m_QueueButtons[0].SetSelected ();
+	//			}
+	//		}
+	//	}
+	//	else
+	//	{
+	//		Selected = false;
+	//	}
+	//}
 
 	public void AddNewQueue (Building building)
 	{

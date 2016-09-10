@@ -3,6 +3,6 @@ using System.Collections;
 
 public interface IMaintenanceButtons  {
 
-	void Execute();
-	void Resize(Rect area);
+	//void Execute();
+	//void Resize(Rect area);
 }

@@ -9,6 +9,6 @@ public interface IQueueButton : IButton
 	
 	void UpdateRect(int Id);
 	void UpdateQueueContents(List<Item> availableItems);
-	void SetSelected();
+	//void SetSelected();
 	void Resize(Rect area);
 }

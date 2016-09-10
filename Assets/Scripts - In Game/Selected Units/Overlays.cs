@@ -4,7 +4,7 @@ using System.Collections;
 public static class Overlays {
 	
 	private static int Height = 100, Width = 100;
-	private static int HealthHeight = 20;
+	private static int HealthHeight = 7;
 	
 	private static Color BorderColour = Color.white;
 	private static Color HealthColour = Color.green;
@@ -19,10 +19,10 @@ public static class Overlays {
 			{
 				if (i == 0 || i == 1 || j == 0 || j == 1 || i == Width-1 || i == Width-2 || j == Height-1 || j == Height-2 || j == Height-HealthHeight)
 				{
-					texToReturn.SetPixel (i, j, BorderColour);
-				}
-				else if (j > Height-HealthHeight)
-				{
+                    texToReturn.SetPixel(i, j, Color.clear);//texToReturn.SetPixel (i, j, BorderColour); //if box border around selected unit wanted
+                }
+				else if (j < HealthHeight) //else if (j > Height-HealthHeight) //top healh bar instead of bottom
+                {
 					texToReturn.SetPixel (i, j, HealthColour);
 				}
 				else

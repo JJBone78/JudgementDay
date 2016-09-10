@@ -6,5 +6,6 @@ public interface ICamera {
 	void Pan(object sender, ScreenEdgeEventArgs e);
 	void SetBoundries(float minX, float minY, float maxX, float maxY);
 	void Move(Vector3 worldPos);
-	void SetMenuWidth(float width);
+    void SetSideMenuWidth(float _width);
+    void SetBottomMenuHeight(float _height);
 }

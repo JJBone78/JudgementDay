@@ -81,10 +81,10 @@ public class Manager : MonoBehaviour, IManager {
 	public void BuildingAdded (Building building)
 	{
 		//Is the building a constructor?
-		if (building.ID == 0 || building.ID == 2)
-		{
-			m_GUIManager.AddConstructor (building);
-		}
+		//if (building.ID == 0 || building.ID == 2)
+		//{
+		//	m_GUIManager.AddConstructor (building);
+		//}
 		
 		if (m_Buildings.Count == 0 || m_Buildings.FirstOrDefault (x => x.ID == building.ID) == null)
 		{
@@ -92,7 +92,7 @@ public class Manager : MonoBehaviour, IManager {
 			m_AvailableItems.AddRange(ItemDB.GetAvailableItems(building.ID, m_Buildings));
 			
 			//Tell all the contents to update themselves
-			m_GUIManager.UpdateQueueContents (m_AvailableItems);
+			//m_GUIManager.UpdateQueueContents (m_AvailableItems);
 		}
 		
 		m_Buildings.Add (building);

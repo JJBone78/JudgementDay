@@ -22,9 +22,10 @@ public class Selected : MonoBehaviour {
 	
 	private float m_OverlayWidth = 0;
 	private float m_OverlayLength = 0;
-	private float m_MainMenuWidth;
-	
-	private Vector3 m_WorldExtents;
+    private float m_MainMenuWidth;
+    private float m_MainMenuHeight;
+
+    private Vector3 m_WorldExtents;
 	
 
 	// Use this for initialization
@@ -33,10 +34,11 @@ public class Selected : MonoBehaviour {
 		Overlay = Overlays.CreateTexture ();
 		IsSelected = false;
 		FindMaxWorldSize();
-		
-		m_MainMenuWidth = ManagerResolver.Resolve<IGUIManager>().MainMenuWidth;
-		
-		m_GLManager = ManagerResolver.Resolve<IGLManager>();
+
+        m_MainMenuWidth = ManagerResolver.Resolve<IGUIManager>().MainMenuWidth;
+        m_MainMenuHeight = ManagerResolver.Resolve<IGUIManager>().MainMenuHeight;
+
+        m_GLManager = ManagerResolver.Resolve<IGLManager>();
 		m_GLMat = GLMatShader.GetGLMaterial ();
 		m_GLItem = new GLItem(GLExecuteFunction);
 		
@@ -106,10 +108,8 @@ public class Selected : MonoBehaviour {
 	{
 		if (IsSelected)
 		{
-			if (OverlayRect.xMax < Screen.width-m_MainMenuWidth)
-			{
-				GUI.DrawTexture (OverlayRect, Overlay);
-			}
+			if (OverlayRect.xMax < Screen.width-m_MainMenuWidth && OverlayRect.yMax < Screen.height - (GUIManager._is_construction_shown ? 197f : 0f))
+				GUI.DrawTexture (OverlayRect, Overlay); //draw border around selected units
 		}
 	}
 	

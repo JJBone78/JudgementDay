@@ -18,23 +18,23 @@ public class QueueButton : IQueueButton
 	private int m_TeamIdentifier;
 	private int m_TypeIdentifier;
 	
-	public bool Selected
-	{
-		get
-		{
-			return m_Selected;
-		}
-		private set
-		{
-			if (Equals (m_Selected, value))
-			{
-				return;
-			}
+	//public bool Selected
+	//{
+	//	get
+	//	{
+	//		return m_Selected;
+	//	}
+	//	private set
+	//	{
+	//		if (Equals (m_Selected, value))
+	//		{
+	//			return;
+	//		}
 			
-			m_Selected = value;
-			SelectedValueChanged (m_Selected);
-		}
-	}
+	//		m_Selected = value;
+	//		SelectedValueChanged (m_Selected);
+	//	}
+	//}
 	
 	public int BuildingID
 	{
@@ -79,10 +79,10 @@ public class QueueButton : IQueueButton
 		m_BuildingIdentifier = buildingId;
 		
 		//Create style
-		m_ButtonStyle = GUIStyles.CreateQueueButtonStyle();
+		//m_ButtonStyle = GUIStyles.CreateQueueButtonStyle();
 		
 		//Attach to events
-		GUIEvents.QueueButtonChanged += ButtonPressedEvent;
+		//GUIEvents.QueueButtonChanged += ButtonPressedEvent;
 		
 		//Assign identifiers
 		m_TeamIdentifier = TeamID;
@@ -93,50 +93,50 @@ public class QueueButton : IQueueButton
 		m_QueueContent = new QueueContent(menuArea);
 	}
 	
-	private void SelectedValueChanged(bool newValue)
-	{
-		if (newValue)
-		{
-			//Button has been clicked, set to highlight
-			m_ButtonStyle.normal.background = GUITextures.TypeButtonSelected;
-			m_ButtonStyle.hover.background = GUITextures.TypeButtonSelected;
+	//private void SelectedValueChanged(bool newValue)
+	//{
+	//	if (newValue)
+	//	{
+	//		//Button has been clicked, set to highlight
+	//		m_ButtonStyle.normal.background = GUITextures.TypeButtonSelected;
+	//		m_ButtonStyle.hover.background = GUITextures.TypeButtonSelected;
 			
-		}
-		else
-		{
-			//Button has been deselected, remove highlight
-			m_ButtonStyle.normal.background = GUITextures.TypeButtonNormal;
-			m_ButtonStyle.hover.background = GUITextures.TypeButtonHover;
+	//	}
+	//	else
+	//	{
+	//		//Button has been deselected, remove highlight
+	//		m_ButtonStyle.normal.background = GUITextures.TypeButtonNormal;
+	//		m_ButtonStyle.hover.background = GUITextures.TypeButtonHover;
 			
-		}
-	}
+	//	}
+	//}
 	
-	private void ButtonPressedEvent(object sender, QueueButtonEventArgs e)
-	{
-		if (sender == this)
-		{
-			Selected = true;
-		}
-		else
-		{
-			Selected = false;
-		}
-	}
+	//private void ButtonPressedEvent(object sender, QueueButtonEventArgs e)
+	//{
+	//	if (sender == this)
+	//	{
+	//		Selected = true;
+	//	}
+	//	else
+	//	{
+	//		Selected = false;
+	//	}
+	//}
 	
-	public void Execute()
-	{
-		//Draw Button
-		if (GUI.Button (m_ButtonRect, (ID+1).ToString (), m_ButtonStyle))
-		{
-			GUIEvents.QueueButtonPressed (this, ID);
-		}
+	//public void Execute()
+	//{
+	//	//Draw Button
+	//	if (GUI.Button (m_ButtonRect, (ID+1).ToString (), m_ButtonStyle))
+	//	{
+	//		GUIEvents.QueueButtonPressed (this, ID);
+	//	}
 		
-		if (Selected)
-		{
-			//Draw Queue Content
-			m_QueueContent.Execute ();
-		}
-	}
+	//	if (Selected)
+	//	{
+	//		//Draw Queue Content
+	//		m_QueueContent.Execute ();
+	//	}
+	//}
 	
 	public void UpdateRect (int Id)
 	{
@@ -148,13 +148,13 @@ public class QueueButton : IQueueButton
 			m_ID--;
 		}
 	}
-	
-	public void SetSelected()
-	{
-		Selected = true;
-	}
-	
-	public void UpdateQueueContents(List<Item> availableItems)
+
+    //public void SetSelected()
+    //{
+    //    Selected = true;
+    //}
+
+    public void UpdateQueueContents(List<Item> availableItems)
 	{
 		m_QueueContent.UpdateContents (availableItems.FindAll (x => x.TypeIdentifier == m_TypeIdentifier && x.TeamIdentifier == m_TeamIdentifier));
 	}

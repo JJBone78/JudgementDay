@@ -16,8 +16,9 @@ public class MainCamera : MonoBehaviour, ICamera {
 	public float ScrollAcceleration = 30.0f;
 	
 	public float ZoomRate = 1200.0f;
-	
-	private float m_MenuWidth;
+
+    private float m_MenuWidth;
+    private float m_MenuHeight;
     private float dragSpeed = 11f;
     private bool canWeScroll = true;
 	
@@ -48,17 +49,10 @@ public class MainCamera : MonoBehaviour, ICamera {
     {
         if (Input.GetMouseButton(2))
         {
-
             if (Input.GetAxis("Mouse X") > 0)
-            {
-                transform.position -= new Vector3(Input.GetAxisRaw("Mouse X") * dragSpeed,
-                                           0.0f, Input.GetAxisRaw("Mouse Y") * dragSpeed);
-            }
+                transform.position -= new Vector3(Input.GetAxisRaw("Mouse X") * dragSpeed, 0.0f, Input.GetAxisRaw("Mouse Y") * dragSpeed);
             else if (Input.GetAxis("Mouse X") < 0)
-            {
-                transform.position -= new Vector3(Input.GetAxisRaw("Mouse X") * dragSpeed,
-                                           0.0f, Input.GetAxisRaw("Mouse Y") * dragSpeed);
-            }
+                transform.position -= new Vector3(Input.GetAxisRaw("Mouse X") * dragSpeed, 0.0f, Input.GetAxisRaw("Mouse Y") * dragSpeed);
         }
     }
 
@@ -103,8 +97,8 @@ public class MainCamera : MonoBehaviour, ICamera {
 	private void CheckEdgeMovement()
 	{
 		Ray r1 = Camera.main.ViewportPointToRay (new Vector3(0,1,0));
-		Ray r2 = Camera.main.ScreenPointToRay (new Vector3(Screen.width-m_MenuWidth,Screen.height-1,0));
-		Ray r3 = Camera.main.ViewportPointToRay (new Vector3(0,0,0));
+		Ray r2 = Camera.main.ScreenPointToRay (new Vector3(GUIManager._right_menu_x_coord, Screen.height-1,0));
+		Ray r3 = Camera.main.ViewportPointToRay (new Vector3(0, 0,0));//0,0,0
 		
 		float left, right, top, bottom;
 		
@@ -174,8 +168,13 @@ public class MainCamera : MonoBehaviour, ICamera {
 		m_Boundries.yMax = maxY;
 	}
 	
-	public void SetMenuWidth(float width)
+	public void SetSideMenuWidth(float _width)
 	{
-		m_MenuWidth = width;
+		m_MenuWidth = _width;
 	}
+
+    public void SetBottomMenuHeight(float _height)
+    {
+        m_MenuHeight = _height;
+    }
 }
