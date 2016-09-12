@@ -7,6 +7,8 @@ public class SoundManager : MonoBehaviour
     public AudioSource _effect_audio;
     public AudioSource _music_audio;
     public AudioSource _computer_audio;
+    public AudioSource _units_audio;
+    public AudioSource _buildings_audio;
     //public AudioClip[] _effects;
     public static SoundManager _instance = null;
    
@@ -35,5 +37,17 @@ public class SoundManager : MonoBehaviour
     {
         _music_audio.clip = clip;
         _music_audio.Play();
+    }
+
+    public void _play_units(AudioClip clip)
+    {
+        _units_audio.clip = clip;
+        _units_audio.Play();
+    }
+
+    public void _play_buildings(AudioClip clip)
+    {
+        _buildings_audio.clip = clip;
+        _buildings_audio.Play();
     }
 }
