@@ -22,4 +22,14 @@ public static class Orders {
 	{
 		return new Order("Deploy", 3);
 	}
+
+    public static Order CreateLightingOrder(int _order_type)
+    {
+        if (_order_type == 4)
+            return new Order("LightOn", 4);
+        else if (_order_type == 5)
+            return new Order("LightOff", 5);
+        else
+            return new Order("LightAuto", 6);
+    }
 }

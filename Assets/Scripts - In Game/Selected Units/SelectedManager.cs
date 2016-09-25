@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class SelectedManager : MonoBehaviour, ISelectedManager {
 	
 	private List<IOrderable> SelectedActiveObjects = new List<IOrderable>();	
-	private List<RTSObject> SelectedObjects = new List<RTSObject>();
+	public List<RTSObject> SelectedObjects = new List<RTSObject>();
 
 	private List<List<RTSObject>> Group = new List<List<RTSObject>>();
 	

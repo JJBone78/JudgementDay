@@ -9,9 +9,13 @@ public static class Const {
 	public const int ORDER_STOP = 0;
 	public const int ORDER_MOVE_TO = 1;
 	public const int ORDER_ATTACK = 2;
-	public const int ORDER_DEPLOY = 3;
-	
-	public const int BUILDING_ConYard = 0;
+    public const int ORDER_DEPLOY = 3;
+    public const int ORDER_LIGHTS_ON = 4;
+    public const int ORDER_LIGHTS_OFF = 5;
+    public const int ORDER_LIGHTS_AUTO = 6;
+
+
+    public const int BUILDING_ConYard = 0;
 	public const int BUILDING_PowerPlant = 1;
 	public const int BUILDING_Barracks = 2;
 	

@@ -17,8 +17,8 @@ public class MainCamera : MonoBehaviour, ICamera {
 	
 	public float ZoomRate = 1200.0f;
 
-    private float m_MenuWidth;
-    private float m_MenuHeight;
+    //private float m_MenuWidth;
+    //private float m_MenuHeight;
     private float dragSpeed = 11f;
     private bool canWeScroll = true;
 	
@@ -168,13 +168,13 @@ public class MainCamera : MonoBehaviour, ICamera {
 		m_Boundries.yMax = maxY;
 	}
 	
-	public void SetSideMenuWidth(float _width)
-	{
-		m_MenuWidth = _width;
-	}
+	//public void SetSideMenuWidth(float _width)
+	//{
+	//	m_MenuWidth = _width;
+	//}
 
-    public void SetBottomMenuHeight(float _height)
-    {
-        m_MenuHeight = _height;
-    }
+ //   public void SetBottomMenuHeight(float _height)
+ //   {
+ //       m_MenuHeight = _height;
+ //   }
 }

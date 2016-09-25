@@ -16,6 +16,6 @@ public class ResolverConfig : MonoBehaviour {
 		ManagerResolver.Register<IGrid>(Grid.main);
 		ManagerResolver.Register<ICursorManager>(CursorManager.main);
 		ManagerResolver.Register<ILevelLoader>(LevelLoader.main);
-		ManagerResolver.Register<IThreadManager>(ThreadManager.main);
-	}
+        ManagerResolver.Register<IThreadManager>(ThreadManager.main);
+    }
 }

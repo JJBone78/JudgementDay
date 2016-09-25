@@ -83,9 +83,10 @@ public class VehicleMovement : LandMovement {
 
 	public override void MoveTo(Vector3 position)
 	{
-		if (m_ArrivalTile != null) m_ArrivalTile.ExpectingArrival = false;
+		if (m_ArrivalTile != null)
+            m_ArrivalTile.ExpectingArrival = false;
 		m_ArrivalTile = Grid.GetClosestArrivalTile(position);
-		m_ArrivalTile.ExpectingArrival = true;
+        m_ArrivalTile.ExpectingArrival = true;
 		
 		Tile currentTile = Grid.GetClosestTile (transform.position);
 		ManagerResolver.Resolve<IThreadManager>().AddPathfindingThread (new GetPathThread(m_Parent, currentTile, m_ArrivalTile, Const.BLOCKINGLEVEL_Normal));
@@ -323,7 +324,7 @@ public class VehicleMovement : LandMovement {
 					ManagerResolver.Resolve<IThreadManager>().AddPathfindingThread (new GetPathThread(m_Parent, m_CurrentTile, m_ArrivalTile, Const.BLOCKINGLEVEL_Occupied, ThreadCallBack));
 					m_RequestingThread = true;
 					
-					//Set target tile to null, this will stop the other unit from also trtying to find a dynamic path, but it will get updated once the thread finishes
+					//Set target tile to null, this will stop the other unit from also trying to find a dynamic path, but it will get updated once the thread finishes
 					m_TargetTile = null;
 				}
 			}

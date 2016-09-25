@@ -4,46 +4,46 @@ using System.Collections.Generic;
 using System;
 
 [ExecuteInEditMode]
-public class Grid : MonoBehaviour, IGrid 
+public class Grid : MonoBehaviour//, IGrid 
 {
 	//Singleton
 	public static Grid main;
 	
 	//Member variables
-	private static bool m_ShowGrid = false;	
-	private static bool m_ShowOpenTiles = true;
-	private static bool m_ShowClosedTiles = true;
-	private static bool m_ShowBridgeTiles = true;
-	private static bool m_ShowTunnelTiles = true;
+	private static bool _show_grid = false;	
+	private static bool _show_open_tiles = true;
+	private static bool _show_closed_tiles = true;
+	private static bool _show_bridge_tiles = true;
+	private static bool _show_tunnel_tiles = true;
 	
-	private static float m_TileSize = 7.5f;
-	private static int m_Width = 200;
-	private static int m_Length = 200;
-	private static float m_WidthOffset = 400;
-	private static float m_LengthOffset = 400;
-	private static float m_MaxSteepness = 2.5f;
-	private static float m_PassableHeight = 2.0f;
-	private static int m_BlockIndent = 5;
+	private static float _tile_size = 7.5f;
+	private static int _width = 133;//200;
+	private static int _length = 133;//200;
+	private static float _width_offset = 0;//400; //region on the start of the left of the map to ignore move commands
+	private static float _length_offset = 0;//400; //region on the start of the bottom of the map to ignore move commands
+    private static float _max_steepness = 2.5f;
+	private static float _passable_height = 2.0f;
+	private static int _block_indent = 0;//5; //border size around the map to ignore the move commands
 	
-	private static Tile[,] m_Grid;
+	private static Tile[,] _grid;
 	
-	private static List<Vector3> debugAlgo = new List<Vector3>();
+	private static readonly List<Vector3> _debug_algorithm = new List<Vector3>();
 	
 	//Properties
 	public static bool ShowGrid
 	{
 		get
 		{
-			return m_ShowGrid;
+			return _show_grid;
 		}
 		set
 		{
-			if (m_Grid == null)
+			if (_grid == null)
 			{
 				Initialise ();
 			}
 			
-			m_ShowGrid = value;
+			_show_grid = value;
 		}
 	}
 	
@@ -51,11 +51,11 @@ public class Grid : MonoBehaviour, IGrid
 	{
 		get
 		{
-			return m_ShowOpenTiles;
+			return _show_open_tiles;
 		}
 		set
 		{
-			m_ShowOpenTiles = value;
+			_show_open_tiles = value;
 		}
 	}
 	
@@ -63,11 +63,11 @@ public class Grid : MonoBehaviour, IGrid
 	{
 		get
 		{
-			return m_ShowClosedTiles;
+			return _show_closed_tiles;
 		}
 		set
 		{
-			m_ShowClosedTiles = value;
+			_show_closed_tiles = value;
 		}
 	}
 	
@@ -75,11 +75,11 @@ public class Grid : MonoBehaviour, IGrid
 	{
 		get
 		{
-			return m_ShowBridgeTiles;
+			return _show_bridge_tiles;
 		}
 		set
 		{
-			m_ShowBridgeTiles = value;
+			_show_bridge_tiles = value;
 		}
 	}
 	
@@ -87,11 +87,11 @@ public class Grid : MonoBehaviour, IGrid
 	{
 		get
 		{
-			return m_ShowTunnelTiles;
+			return _show_tunnel_tiles;
 		}
 		set
 		{
-			m_ShowTunnelTiles = value;
+			_show_tunnel_tiles = value;
 		}
 	}
 	
@@ -99,16 +99,16 @@ public class Grid : MonoBehaviour, IGrid
 	{
 		get
 		{
-			return m_TileSize;
+			return _tile_size;
 		}
 		set
 		{
-			if (Equals (m_TileSize, value))
+			if (Equals (_tile_size, value))
 			{
 				return;
 			}
 			
-			m_TileSize = value;
+			_tile_size = value;
 			
 			Initialise ();
 		}
@@ -118,16 +118,16 @@ public class Grid : MonoBehaviour, IGrid
 	{
 		get
 		{
-			return m_Width;
+			return _width;
 		}
 		set
 		{
-			if (Equals (m_Width, value))
+			if (Equals (_width, value))
 			{
 				return;
 			}
 		
-			m_Width = value;
+			_width = value;
 			
 			Initialise ();
 		}
@@ -137,16 +137,16 @@ public class Grid : MonoBehaviour, IGrid
 	{
 		get
 		{
-			return m_Length;
+			return _length;
 		}
 		set
 		{
-			if (Equals (m_Length, value))
+			if (Equals (_length, value))
 			{
 				return;
 			}
 			
-			m_Length = value;
+			_length = value;
 			
 			Initialise ();
 		}
@@ -156,16 +156,16 @@ public class Grid : MonoBehaviour, IGrid
 	{
 		get
 		{
-			return m_WidthOffset;
+			return _width_offset;
 		}
 		set
 		{
-			if (Equals (m_WidthOffset, value))
+			if (Equals (_width_offset, value))
 			{
 				return;
 			}
 			
-			m_WidthOffset = value;
+			_width_offset = value;
 			
 			Initialise ();
 		}
@@ -175,16 +175,16 @@ public class Grid : MonoBehaviour, IGrid
 	{
 		get
 		{
-			return m_LengthOffset;
+			return _length_offset;
 		}
 		set
 		{
-			if (Equals (m_LengthOffset, value))
+			if (Equals (_length_offset, value))
 			{
 				return;
 			}
 			
-			m_LengthOffset = value;
+			_length_offset = value;
 			
 			Initialise ();
 		}
@@ -194,16 +194,16 @@ public class Grid : MonoBehaviour, IGrid
 	{
 		get
 		{
-			return m_MaxSteepness;
+			return _max_steepness;
 		}
 		set
 		{
-			if (Equals (m_MaxSteepness, value))
+			if (Equals (_max_steepness, value))
 			{
 				return;
 			}
 			
-			m_MaxSteepness = value;
+			_max_steepness = value;
 			
 			Initialise ();
 		}
@@ -213,16 +213,16 @@ public class Grid : MonoBehaviour, IGrid
 	{
 		get
 		{
-			return m_PassableHeight;
+			return _passable_height;
 		}
 		set
 		{
-			if (Equals (m_PassableHeight, value))
+			if (Equals (_passable_height, value))
 			{
 				return;
 			}
 			
-			m_PassableHeight = value;
+			_passable_height = value;
 			
 			Initialise ();
 		}
@@ -232,22 +232,22 @@ public class Grid : MonoBehaviour, IGrid
 	{
 		get
 		{
-			return m_BlockIndent;
+			return _block_indent;
 		}
 		set
 		{
-			if (Equals (m_BlockIndent, value))
+			if (Equals (_block_indent, value))
 			{
 				return;
 			}
 			
 			if (value > 0)
 			{
-				m_BlockIndent = value;
+				_block_indent = value;
 			}
 			else
 			{
-				m_BlockIndent = 1;
+				_block_indent = 1;
 			}
 			
 			Initialise ();
@@ -274,16 +274,16 @@ public class Grid : MonoBehaviour, IGrid
 	
 	void OnDrawGizmos()
 	{
-		if (m_ShowGrid && Application.isEditor && m_Grid != null)
+		if (_show_grid && Application.isEditor && _grid != null)
 		{
-			foreach (Tile tile in m_Grid)
+			foreach (Tile tile in _grid)
 			{
 				if (tile.Status == Const.TILE_Blocked) 
 				{
 					if (ShowClosedTiles)
 					{
 						Gizmos.color = Color.red;
-						Gizmos.DrawWireCube (tile.Center, new Vector3(m_TileSize, 0.1f, m_TileSize));
+						Gizmos.DrawWireCube (tile.Center, new Vector3(_tile_size, 0.1f, _tile_size));
 					}
 				}
 				else
@@ -291,7 +291,7 @@ public class Grid : MonoBehaviour, IGrid
 					if (ShowOpenTiles)
 					{
 						Gizmos.color = Color.white;
-						Gizmos.DrawWireCube (tile.Center, new Vector3(m_TileSize, 0.1f, m_TileSize));
+						Gizmos.DrawWireCube (tile.Center, new Vector3(_tile_size, 0.1f, _tile_size));
 					}
 				}
 				
@@ -303,7 +303,7 @@ public class Grid : MonoBehaviour, IGrid
 						if (ShowBridgeTiles)
 						{
 							Gizmos.color = Color.green;
-							Gizmos.DrawWireCube (t.Center, new Vector3(m_TileSize, 0.1f, m_TileSize));
+							Gizmos.DrawWireCube (t.Center, new Vector3(_tile_size, 0.1f, _tile_size));
 						}
 					}
 					else
@@ -311,17 +311,17 @@ public class Grid : MonoBehaviour, IGrid
 						if (ShowTunnelTiles)
 						{
 							Gizmos.color = Color.cyan;
-							Gizmos.DrawWireCube (t.Center, new Vector3(m_TileSize, 0.1f, m_TileSize));
+							Gizmos.DrawWireCube (t.Center, new Vector3(_tile_size, 0.1f, _tile_size));
 						}
 					}
 				}
 			}
 		}
 		
-		for (int i = 1; i < debugAlgo.Count; i++)
+		for (int i = 1; i < _debug_algorithm.Count; i++)
 		{
 			Gizmos.color = Color.yellow;
-			Gizmos.DrawLine (debugAlgo[i-1], debugAlgo[i]);
+			Gizmos.DrawLine (_debug_algorithm[i-1], _debug_algorithm[i]);
 		}
 	}
 	
@@ -329,19 +329,19 @@ public class Grid : MonoBehaviour, IGrid
 	{
 		ILevelLoader levelLoader = ManagerResolver.Resolve<ILevelLoader>();
 		
-		m_Grid = new Tile[Width, Length];
+		_grid = new Tile[Width, Length];
 		
 		//Create tiles
-		for (int i=0; i<Width; i++)
+		for (int i = 0; i < Width; i++)
 		{
-			for (int j=0; j<Length; j++)
+            for (int j = 0; j < Length; j++)
 			{
-				float xCenter = m_WidthOffset + ((i*m_TileSize) + (m_TileSize/2.0f));
-				float zCenter = m_LengthOffset + ((j*m_TileSize) + (m_TileSize/2.0f));
-				Vector3 center = new Vector3(xCenter, 0, zCenter);				
-				center.y = Terrain.activeTerrain.SampleHeight(center);
+                float xCenter = _width_offset + ((i * _tile_size) + (_tile_size / 2.0f)); //m_WidthOffset = 400
+                float zCenter = _length_offset + ((j * _tile_size) + (_tile_size / 2.0f)); //m_TileSize = 7.5f;
+                Vector3 center = new Vector3(xCenter, 0, zCenter);               //Width = 200
+                center.y = Terrain.activeTerrain.SampleHeight(center);
 				
-				m_Grid[i,j] = new Tile(i, j, center);
+				_grid[i,j] = new Tile(i, j, center);
 			}
 		}
 		
@@ -356,7 +356,7 @@ public class Grid : MonoBehaviour, IGrid
 		{
 			for (int j=0; j<Length; j++)
 			{
-				m_Grid[i,j].Evaluate (bridgeList, tunnelList);
+				_grid[i,j].Evaluate (bridgeList, tunnelList);
 			}
 		}
 		
@@ -386,7 +386,7 @@ public class Grid : MonoBehaviour, IGrid
 		{
 			for (int j=0; j<Length; j++)
 			{
-				FindAccessibleTiles (m_Grid[i,j]);
+				FindAccessibleTiles (_grid[i,j]);
 			}
 		}
 		
@@ -396,19 +396,19 @@ public class Grid : MonoBehaviour, IGrid
 	
 	public static void Initialise()
 	{
-		m_Grid = new Tile[Width, Length];
+		_grid = new Tile[Width, Length];
 		
 		//Create tiles
-		for (int i=0; i<Width; i++)
+		for (int i = 0; i < Width; i++)
 		{
-			for (int j=0; j<Length; j++)
+			for (int j = 0; j < Length; j++)
 			{
-				float xCenter = m_WidthOffset + ((i*m_TileSize) + (m_TileSize/2.0f));
-				float zCenter = m_LengthOffset + ((j*m_TileSize) + (m_TileSize/2.0f));
-				Vector3 center = new Vector3(xCenter, 0, zCenter);				
-				center.y = Terrain.activeTerrain.SampleHeight(center);
+                float xCenter = _width_offset + ((i * _tile_size) + (_tile_size / 2.0f));
+                float zCenter = _length_offset + ((j * _tile_size) + (_tile_size / 2.0f));
+                Vector3 center = new Vector3(xCenter, 0, zCenter);
+                center.y = Terrain.activeTerrain.SampleHeight(center);
 				
-				m_Grid[i,j] = new Tile(i, j, center);
+				_grid[i,j] = new Tile(i, j, center);
 			}
 		}
 		
@@ -420,7 +420,7 @@ public class Grid : MonoBehaviour, IGrid
 		{
 			for (int j=0; j<Length; j++)
 			{
-				m_Grid[i,j].Evaluate (bridgeList, tunnelList);
+				_grid[i,j].Evaluate (bridgeList, tunnelList);
 			}
 		}
 		
@@ -439,8 +439,8 @@ public class Grid : MonoBehaviour, IGrid
 	
 	public static Tile GetClosestTile(Vector3 position)
 	{
-		int iValue = (int)((position.x - m_WidthOffset)/m_TileSize);
-		int jValue = (int)((position.z - m_LengthOffset)/m_TileSize);
+		int iValue = (int)((position.x - _width_offset)/_tile_size);
+		int jValue = (int)((position.z - _length_offset)/_tile_size);
 		
 		if (iValue < 0) iValue = 0;
 		else if (iValue >= Width) iValue = Width-1;
@@ -448,7 +448,7 @@ public class Grid : MonoBehaviour, IGrid
 		if (jValue < 0) jValue = 0;
 		else if (jValue >= Length) jValue = Length-1;
 		
-		Tile tileToReturn = m_Grid[iValue, jValue];
+		Tile tileToReturn = _grid[iValue, jValue];
 		
 		float distance = Mathf.Abs (tileToReturn.Center.y - position.y);
 		Tile lTile = null;
@@ -471,9 +471,9 @@ public class Grid : MonoBehaviour, IGrid
 	
 	public static Tile GetClosestAvailableTile(Vector3 position)
 	{
-		debugAlgo.Clear ();
-		int iValue = (int)((position.x - m_WidthOffset)/m_TileSize);
-		int jValue = (int)((position.z - m_LengthOffset)/m_TileSize);
+		_debug_algorithm.Clear ();
+		int iValue = (int)((position.x - _width_offset)/_tile_size);
+		int jValue = (int)((position.z - _length_offset)/_tile_size);
 		
 		if (iValue < 0) iValue = 0;
 		else if (iValue >= Width) iValue = Width-1;
@@ -481,7 +481,7 @@ public class Grid : MonoBehaviour, IGrid
 		if (jValue < 0) jValue = 0;
 		else if (jValue >= Length) jValue = Length-1;
 		
-		Tile tileToReturn = m_Grid[iValue, jValue];
+		Tile tileToReturn = _grid[iValue, jValue];
 		
 		if (tileToReturn.LayeredTiles.Count > 0)
 		{
@@ -623,8 +623,8 @@ public class Grid : MonoBehaviour, IGrid
 						break;
 					}
 					
-					tileToReturn = m_Grid[IValue, JValue];
-					debugAlgo.Add (tileToReturn.Center);
+					tileToReturn = _grid[IValue, JValue];
+					_debug_algorithm.Add (tileToReturn.Center);
 				}
 			}
 		}
@@ -634,8 +634,8 @@ public class Grid : MonoBehaviour, IGrid
 	
 	public static Tile GetClosestAvailableFreeTile(Vector3 position)
 	{
-		int iValue = (int)((position.x - m_WidthOffset)/m_TileSize);
-		int jValue = (int)((position.z - m_LengthOffset)/m_TileSize);
+		int iValue = (int)((position.x - _width_offset)/_tile_size);
+		int jValue = (int)((position.z - _length_offset)/_tile_size);
 		
 		if (iValue < 0) iValue = 0;
 		else if (iValue >= Width) iValue = Width-1;
@@ -643,7 +643,7 @@ public class Grid : MonoBehaviour, IGrid
 		if (jValue < 0) jValue = 0;
 		else if (jValue >= Length) jValue = Length-1;
 		
-		Tile tileToReturn = m_Grid[iValue, jValue];
+		Tile tileToReturn = _grid[iValue, jValue];
 		
 		float yVal = Mathf.Abs (tileToReturn.Center.y - position.y);
 		foreach (Tile tile in tileToReturn.LayeredTiles)
@@ -787,7 +787,7 @@ public class Grid : MonoBehaviour, IGrid
 						break;
 					}
 					
-					tileToReturn = m_Grid[IValue, JValue];
+					tileToReturn = _grid[IValue, JValue];
 					
 					yVal = Mathf.Abs (tileToReturn.Center.y - position.y);
 					foreach (Tile tile in tileToReturn.LayeredTiles)
@@ -807,8 +807,8 @@ public class Grid : MonoBehaviour, IGrid
 	
 	public static Tile GetClosestArrivalTile(Vector3 position)
 	{
-		int iValue = (int)((position.x - m_WidthOffset)/m_TileSize);
-		int jValue = (int)((position.z - m_LengthOffset)/m_TileSize);
+		int iValue = (int)((position.x - _width_offset)/_tile_size);
+		int jValue = (int)((position.z - _length_offset)/_tile_size);
 		
 		if (iValue < 0) iValue = 0;
 		else if (iValue >= Width) iValue = Width-1;
@@ -816,7 +816,7 @@ public class Grid : MonoBehaviour, IGrid
 		if (jValue < 0) jValue = 0;
 		else if (jValue >= Length) jValue = Length-1;
 		
-		Tile tileToReturn = m_Grid[iValue, jValue];
+		Tile tileToReturn = _grid[iValue, jValue];
 		
 		float yVal = Mathf.Abs (tileToReturn.Center.y - position.y);
 		foreach (Tile tile in tileToReturn.LayeredTiles)
@@ -862,17 +862,35 @@ public class Grid : MonoBehaviour, IGrid
 		//Need to find which tiles this tile can travel to
 		try
 		{
-			Tile tileLeft = m_Grid[tile.I-1, tile.J];
-			Tile tileRight = m_Grid[tile.I+1, tile.J];
-			Tile tileUp = m_Grid[tile.I, tile.J+1];
-			Tile tileDown = m_Grid[tile.I, tile.J-1];
-			
-			Tile topLeft = m_Grid[tile.I-1, tile.J+1];
-			Tile topRight = m_Grid[tile.I+1, tile.J+1];
-			Tile bottomRight = m_Grid[tile.I+1, tile.J-1];
-			Tile bottomLeft = m_Grid[tile.I-1, tile.J-1];
-			
-			CheckTileConnection (tile, tileLeft);
+		    Tile topLeft;
+		    Tile topRight;
+		    Tile bottomRight;
+		    Tile bottomLeft;
+            Tile tileLeft = tile.I != 0 ? _grid[tile.I-1, tile.J] : _grid[tile.I, tile.J];
+            Tile tileRight = tile.I < _grid.GetUpperBound(0) ? _grid[tile.I+1, tile.J] : _grid[tile.I, tile.J];
+            Tile tileUp = tile.J < _grid.GetUpperBound(1) ? _grid[tile.I, tile.J+1] : _grid[tile.I, tile.J];
+            Tile tileDown = tile.J != 0 ? _grid[tile.I, tile.J-1] : _grid[tile.I, tile.J];
+
+            if (tile.I != 0 && tile.J < _grid.GetUpperBound(1))
+			    topLeft = _grid[tile.I-1, tile.J+1];
+            else
+                topLeft = _grid[tile.I, tile.J];
+
+            if (tile.I < _grid.GetUpperBound(0) && tile.J < _grid.GetUpperBound(1))
+			    topRight = _grid[tile.I+1, tile.J+1];
+            else
+                topRight = _grid[tile.I, tile.J];
+
+            if (tile.I < _grid.GetUpperBound(0) && tile.J != 0)
+			    bottomRight = _grid[tile.I+1, tile.J-1];
+            else
+                bottomRight = _grid[tile.I, tile.J];
+
+            if (tile.I != 0 && tile.J != 0)
+			    bottomLeft = _grid[tile.I-1, tile.J-1];
+			else
+                bottomLeft = _grid[tile.I, tile.J];
+            CheckTileConnection (tile, tileLeft);
 			CheckTileConnection (tile, tileRight);
 			CheckTileConnection (tile, tileUp);
 			CheckTileConnection (tile, tileDown);
@@ -883,7 +901,7 @@ public class Grid : MonoBehaviour, IGrid
 		}
 		catch 
 		{
-			//Silently ignored, bad coder!
+			//Silently ignored, bad programmer! ;P
 		}
 	}
 	
@@ -924,19 +942,19 @@ public class Grid : MonoBehaviour, IGrid
 	
 	public static void SetTunnelSideTileToBlocked(int I, int J)
 	{
-		m_Grid[I, J].Status = Const.TILE_Blocked;
+		_grid[I, J].Status = Const.TILE_Blocked;
 	}
 	
-	public static void AddLayeredTile(int gridI, int gridJ, float height, bool isBridge, Collider collider)
-	{
-		Vector3 baseCenter = m_Grid[gridI, gridJ].Center;
-		Vector3 centerPos = new Vector3(baseCenter.x, height, baseCenter.z);
-		m_Grid[gridI, gridJ].LayeredTiles.Add (new Tile(gridI, gridJ, centerPos, isBridge, !isBridge));
-	}
+	//public static void AddLayeredTile(int gridI, int gridJ, float height, bool isBridge, Collider collider)
+	//{
+	//	Vector3 baseCenter = m_Grid[gridI, gridJ].Center;
+	//	Vector3 centerPos = new Vector3(baseCenter.x, height, baseCenter.z);
+	//	m_Grid[gridI, gridJ].LayeredTiles.Add (new Tile(gridI, gridJ, centerPos, isBridge, !isBridge));
+	//}
 	
 	public static void AssignGrid(Tile[,] grid)
 	{
-		m_Grid = grid;
+		_grid = grid;
 	}
 	
 	private static void BuildBridge(Collider bridgeCollider)
@@ -974,11 +992,11 @@ public class Grid : MonoBehaviour, IGrid
 				
 				if (leftToRight)
 				{
-					terrainTile = m_Grid[i,j];
+					terrainTile = _grid[i,j];
 				}
 				else
 				{
-					terrainTile = m_Grid[j,i];
+					terrainTile = _grid[j,i];
 				}
 				
 				if (j != secondMinNumber && j != secondMaxNumber)
@@ -988,29 +1006,29 @@ public class Grid : MonoBehaviour, IGrid
 					
 					if (leftToRight)
 					{
-						Ray yValueRay = new Ray(m_Grid[i,j].Center+(Vector3.up*1000), Vector3.down);
+						Ray yValueRay = new Ray(_grid[i,j].Center+(Vector3.up*1000), Vector3.down);
 						RaycastHit hitInfo;
 						if (bridgeCollider.Raycast (yValueRay, out hitInfo, Mathf.Infinity))
 						{
-							tileToAdd = new Tile(i, j, new Vector3(m_Grid[i,j].Center.x, hitInfo.point.y, m_Grid[i,j].Center.z), true, false, bridgeCollider);
+							tileToAdd = new Tile(i, j, new Vector3(_grid[i,j].Center.x, hitInfo.point.y, _grid[i,j].Center.z), true, false, bridgeCollider);
 						}
 						else
 						{
 							//We didn't hit the collider, that means it's either an entrance or exit, now we have to use ClosestPointOnBounds instead
-							tileToAdd = new Tile(i, j, new Vector3(m_Grid[i,j].Center.x, bridgeCollider.ClosestPointOnBounds (m_Grid[i,j].Center+(Vector3.up*10)).y, m_Grid[i,j].Center.z), true, false, bridgeCollider);
+							tileToAdd = new Tile(i, j, new Vector3(_grid[i,j].Center.x, bridgeCollider.ClosestPointOnBounds (_grid[i,j].Center+(Vector3.up*10)).y, _grid[i,j].Center.z), true, false, bridgeCollider);
 						}
 					}
 					else
 					{
-						Ray yValueRay = new Ray(m_Grid[j,i].Center+(Vector3.up*1000), Vector3.down);
+						Ray yValueRay = new Ray(_grid[j,i].Center+(Vector3.up*1000), Vector3.down);
 						RaycastHit hitInfo;
 						if (bridgeCollider.Raycast (yValueRay, out hitInfo, Mathf.Infinity))
 						{
-							tileToAdd = new Tile(j, i, new Vector3(m_Grid[j,i].Center.x, hitInfo.point.y, m_Grid[j,i].Center.z), true, false, bridgeCollider);
+							tileToAdd = new Tile(j, i, new Vector3(_grid[j,i].Center.x, hitInfo.point.y, _grid[j,i].Center.z), true, false, bridgeCollider);
 						}
 						else
 						{
-							tileToAdd = new Tile(j, i, new Vector3(m_Grid[j,i].Center.x, bridgeCollider.ClosestPointOnBounds (m_Grid[j,i].Center+(Vector3.up*10)).y, m_Grid[j,i].Center.z), true, false, bridgeCollider);
+							tileToAdd = new Tile(j, i, new Vector3(_grid[j,i].Center.x, bridgeCollider.ClosestPointOnBounds (_grid[j,i].Center+(Vector3.up*10)).y, _grid[j,i].Center.z), true, false, bridgeCollider);
 						}
 					}
 					
@@ -1108,11 +1126,11 @@ public class Grid : MonoBehaviour, IGrid
 				
 				if (leftToRight)
 				{
-					terrainTile = m_Grid[i,j];
+					terrainTile = _grid[i,j];
 				}
 				else
 				{
-					terrainTile = m_Grid[j,i];
+					terrainTile = _grid[j,i];
 				}
 				
 				if (j != secondMinNumber && j != secondMaxNumber)
@@ -1122,11 +1140,11 @@ public class Grid : MonoBehaviour, IGrid
 					
 					if (leftToRight)
 					{
-						tileToAdd = new Tile(i, j, new Vector3(m_Grid[i,j].Center.x, tunnelCollider.bounds.max.y, m_Grid[i,j].Center.z), false, true, tunnelCollider);
+						tileToAdd = new Tile(i, j, new Vector3(_grid[i,j].Center.x, tunnelCollider.bounds.max.y, _grid[i,j].Center.z), false, true, tunnelCollider);
 					}
 					else
 					{
-						tileToAdd = new Tile(j, i, new Vector3(m_Grid[j,i].Center.x, tunnelCollider.bounds.max.y, m_Grid[j,i].Center.z), false, true, tunnelCollider);
+						tileToAdd = new Tile(j, i, new Vector3(_grid[j,i].Center.x, tunnelCollider.bounds.max.y, _grid[j,i].Center.z), false, true, tunnelCollider);
 					}
 					
 					if (i == firstMinNumber || i == firstMaxNumber)

@@ -1,22 +1,22 @@
 using UnityEngine;
 using System.Collections;
 
-public class StandardTank : Vehicle {
-
+public class StandardTank : Vehicle
+{
 	// Use this for initialization
-	protected new void Start () 
+	protected new void Start() 
 	{
 		//Assign variables for health/movement and so on..
-		AssignDetails (ItemDB.GRIStandardTank);
-		GetComponent<Movement>().AssignDetails (ItemDB.GRIStandardTank);
+		AssignDetails(ItemDB.GRIStandardTank);
+		GetComponent<Movement>().AssignDetails(ItemDB.GRIStandardTank);
 		
 		//Call base class start
-		base.Start ();
+		base.Start();
 	}
 	
 	// Update is called once per frame
-	protected new void Update () 
+	protected new void Update() 
 	{
-		base.Update ();
+		base.Update();
 	}
 }

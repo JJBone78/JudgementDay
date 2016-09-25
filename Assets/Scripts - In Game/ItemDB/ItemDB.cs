@@ -15,6 +15,7 @@ public static class ItemDB {
 	public static Item GRIStandardTank = new Item
 	{
 		ID = 0,
+        Faction = Item.Factions.Faction2,
 		TypeIdentifier = Const.TYPE_Vehicle,
 		TeamIdentifier = Const.TEAM_GRI,
 		Name = "Tank",
@@ -25,15 +26,63 @@ public static class ItemDB {
 		RotationSpeed = 80.0f,
 		Acceleration = 2.0f,
 		Explosion = m_SmallExplosion,
-		Prefab = Resources.Load ("Models/GRI/Units/Vehicles/Standard Tank/StandardTank", typeof(GameObject)) as GameObject,
+		Prefab = Resources.Load ("Models/GRI/Units/Land/Standard Tank/StandardTank", typeof(GameObject)) as GameObject,
 		ItemImage = Resources.Load ("Item Images/GRI/Units/Vehicles/Standard Tank/StandardTank", typeof(Texture2D)) as Texture2D,
 		SortOrder = 0,
 		RequiredBuildings = new int[] { 40 },
 		Cost = 700,
 		BuildTime = 10.0f,
 	};
-	
-	public static Item GRIMCV = new Item
+
+    public static Item Selena = new Item
+    {
+        ID = 0,
+        Faction = Item.Factions.Faction1,
+        TypeIdentifier = Const.TYPE_Air,
+        TeamIdentifier = Const.TEAM_GRI,
+        Name = "Selena",
+        Type = "Scout",
+        Health = 100.0f,
+        Armour = 0f,
+        Damage = 0f,
+        Speed = 10.0f,
+        RotationSpeed = 80.0f,
+        Acceleration = 2.0f,
+        Explosion = m_SmallExplosion,
+        Prefab = Resources.Load("Models/GRI/Units/Air/Selena/Scout", typeof(GameObject)) as GameObject,
+        //ItemImage = Resources.Load("Item Images/GRI/Units/Vehicles/Standard Tank/StandardTank", typeof(Texture2D)) as Texture2D,
+        SortOrder = 0,
+        RequiredBuildings = new int[] { 40 },
+        Cost = 700,
+        BuildTime = 10.0f,
+        ObjectType = typeof(Selena)
+    };
+
+    public static Item B2 = new Item
+    {
+        ID = 0,
+        Faction = Item.Factions.Faction1,
+        TypeIdentifier = Const.TYPE_Air,
+        TeamIdentifier = Const.TEAM_GRI,
+        Name = "",
+        Type = "Constructor",
+        Health = 100.0f,
+        Armour = 0f,
+        Damage = 0f,
+        Speed = 10.0f,
+        RotationSpeed = 80.0f,
+        Acceleration = 2.0f,
+        Explosion = m_SmallExplosion,
+        Prefab = Resources.Load("Models/GRI/Units/Air/B2/B2", typeof(GameObject)) as GameObject,
+        //ItemImage = Resources.Load("Item Images/GRI/Units/Vehicles/Standard Tank/StandardTank", typeof(Texture2D)) as Texture2D,
+        SortOrder = 0,
+        RequiredBuildings = new int[] { },
+        Cost = 700,
+        BuildTime = 10.0f,
+        ObjectType = typeof(B2)
+    };
+
+    public static Item GRIMCV = new Item
 	{
 		ID = 0,
 		TypeIdentifier = Const.TYPE_Vehicle,
@@ -46,7 +95,7 @@ public static class ItemDB {
 		RotationSpeed = 80.0f,
 		Acceleration = 2.0f,
 		Explosion = m_SmallExplosion,
-		Prefab = Resources.Load ("Models/GRI/Units/Vehicles/Standard Tank/StandardTank", typeof(GameObject)) as GameObject,
+		Prefab = Resources.Load ("Models/GRI/Units/Land/Standard Tank/StandardTank", typeof(GameObject)) as GameObject,
 		ItemImage = Resources.Load ("Item Images/GRI/Units/Vehicles/Standard Tank/StandardTank", typeof(Texture2D)) as Texture2D,
 		SortOrder = 0,
 		RequiredBuildings = new int[] { 40 },
@@ -286,10 +335,12 @@ public static class ItemDB {
 		
 		InitialiseItem (GRISupportGun);
 		InitialiseItem (GRISupportRPG);
-		InitialiseItem (GRISupportSAM);
-	}
-	
-	private static void InitialiseItem(Item item)
+        InitialiseItem(GRISupportSAM);
+        InitialiseItem(Selena);
+
+    }
+
+    private static void InitialiseItem(Item item)
 	{
 		item.Initialise ();
 		AllItems.Add (item);

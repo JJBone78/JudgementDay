@@ -7,8 +7,10 @@ public class Item {
 	//Item Member Variables and Properties-----------------------------------
 	public int ID;
 
-	public string Name;
-	public float Health;
+    public Factions Faction;
+    public string Name;
+    public string Type;
+    public float Health;
 	public float Armour;
 	public float Damage = 0;
 	
@@ -49,7 +51,15 @@ public class Item {
 	public int[] RequiredBuildings;
 	public GameObject Explosion;
 	public Type ObjectType;
-	
+
+    public enum Factions
+    {
+        Faction1 = 0,
+        Faction2 = 0,
+        Faction3 = 0,
+        Faction4 = 0
+    };
+
 	//-------------------------------------------------------------
 	
 	//Item building variables------------------------------------------
@@ -112,7 +122,9 @@ public class Item {
 	public Item(Item item)
 	{
 		ID = item.ID;
+	    Faction = item.Faction;
 		Name = item.Name;
+	    Type = item.Type;
 		Health = item.Health;
 		Armour = item.Armour;
 		Damage = item.Damage;

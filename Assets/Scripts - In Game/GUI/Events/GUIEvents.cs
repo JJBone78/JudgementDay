@@ -9,8 +9,8 @@ public class GUIEvents
 	
 	public delegate void ItemUpdate(float frameTime);
 
-    public delegate void MenuWidthChange(float newWidth);
-    public delegate void MenuHeightChange(float newWidth);
+    //public delegate void MenuWidthChange(float newWidth);
+    //public delegate void MenuHeightChange(float newWidth);
 
 
     public static event TypeButton TypeButtonChanged; 
@@ -19,8 +19,8 @@ public class GUIEvents
 	
 	public static event ItemUpdate ItemUpdateTimer;
 
-    public static event MenuWidthChange MenuWidthChanged;
-    public static event MenuHeightChange MenuHeightChanged;
+    //public static event MenuWidthChange MenuWidthChanged;
+    //public static event MenuHeightChange MenuHeightChanged;
 
     public static void TypeButtonPressed(object sender, ButtonType button)
 	{
@@ -54,19 +54,19 @@ public class GUIEvents
 		}
 	}
 	
-	public static void MenuWidthHasChanged(float newWidth)
-	{
-		if (MenuWidthChanged != null)
-		{
-			MenuWidthChanged(newWidth);
-		}
-	}
+	//public static void MenuWidthHasChanged(float newWidth)
+	//{
+	//	if (MenuWidthChanged != null)
+	//	{
+	//		MenuWidthChanged(newWidth);
+	//	}
+	//}
 
-    public static void MenuHeightHasChanged(float newHeight)
-    {
-        if (MenuHeightChanged != null)
-        {
-            MenuHeightChanged(newHeight);
-        }
-    }
+ //   public static void MenuHeightHasChanged(float newHeight)
+ //   {
+ //       if (MenuHeightChanged != null)
+ //       {
+ //           MenuHeightChanged(newHeight);
+ //       }
+ //   }
 }

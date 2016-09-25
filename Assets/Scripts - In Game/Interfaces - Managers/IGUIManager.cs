@@ -4,8 +4,8 @@ using System.Collections.Generic;
 
 public interface IGUIManager {
 
-    float MainMenuWidth { get; }
-    float MainMenuHeight { get; }
+    //float MainMenuWidth { get; }
+    //float MainMenuHeight { get; }
 
     int GetSupportSelected { get; }
 	

@@ -10,9 +10,9 @@ public class LeftButton_Handler : MouseEventArgs {
 	
 	public override void Command()
 	{
-		IUIManager uiManager = ManagerResolver.Resolve<IUIManager>();
-		
-		if (!buttonUp)
+        IUIManager uiManager = ManagerResolver.Resolve<IUIManager>();
+     
+        if (!buttonUp)
 		{
 			if (doubleClick)
 			{
@@ -25,7 +25,7 @@ public class LeftButton_Handler : MouseEventArgs {
 		}
 		else
 		{
-			uiManager.LeftButton_SingleClickUp(this);
-		}
-	}
+            uiManager.LeftButton_SingleClickUp(this);
+        }
+    }
 }

@@ -14,13 +14,13 @@ public class DragSelect : MonoBehaviour {
 	private IGUIManager m_GuiManager;
 	private ISelectedManager m_SelectedManager;
 
-    private float _gui_width = 0;
-    private float _gui_height = 0;
+    //private float _gui_width = 0;
+    //private float _gui_height = 0;
 
     void Awake()
 	{
-        GUIEvents.MenuWidthChanged += MenuWidthChanged;
-        GUIEvents.MenuHeightChanged += MenuHeightChanged;
+        //GUIEvents.MenuWidthChanged += MenuWidthChanged;
+        //GUIEvents.MenuHeightChanged += MenuHeightChanged;
     }
 
     // Use this for initialization
@@ -67,7 +67,7 @@ public class DragSelect : MonoBehaviour {
 	{
         if (e.button == 0)
 		{
-			if (!e.buttonUp && e.X < Screen.width - _gui_width && e.Y > Screen.height - (Screen.height - _gui_height))
+			if (!e.buttonUp && e.X < Screen.width - (GUIManager._is_right_menu_shown ? 178 : 0) && e.Y > Screen.height - (Screen.height - (GUIManager._data._is_construction_shown ? 178 : 0)))
 			{
 				m_DragLocationStart = new Vector2(e.X, e.Y);
 				m_CheckDeselect = true;
@@ -92,27 +92,27 @@ public class DragSelect : MonoBehaviour {
 		Rect rect = new Rect(minX, minY, maxX-minX, maxY-minY);
 		
 		//Don't let the dragged area interfere with the gui
-		if (rect.xMin > Screen.width-_gui_width)
-			rect.xMin = Screen.width-_gui_width;
-        if (rect.yMin > Screen.height - _gui_height)
-            rect.yMin = Screen.height - _gui_height;
-        if (rect.xMax > Screen.width - _gui_width)
-            rect.xMax = Screen.width - _gui_width;
-	    if (rect.yMax > Screen.height - _gui_height)
-	        rect.yMax = Screen.height - _gui_height;
+		if (rect.xMin > Screen.width- (GUIManager._is_right_menu_shown ? 178 : 0))
+			rect.xMin = Screen.width- (GUIManager._is_right_menu_shown ? 178 : 0);
+        if (rect.yMin > Screen.height - (GUIManager._data._is_construction_shown ? 178 : 0))
+            rect.yMin = Screen.height - (GUIManager._data._is_construction_shown ? 178 : 0);
+        if (rect.xMax > Screen.width - (GUIManager._is_right_menu_shown ? 178 : 0))
+            rect.xMax = Screen.width - (GUIManager._is_right_menu_shown ? 178 : 0);
+	    if (rect.yMax > Screen.height - (GUIManager._data._is_construction_shown ? 178 : 0))
+	        rect.yMax = Screen.height - (GUIManager._data._is_construction_shown ? 178 : 0);
 
         m_GuiManager.DragArea = new Rect(maxX, maxY, minX-maxX, minY-maxY);
 		
 		GUI.Box (rect, "", style);
 	}
 	
-	public void MenuWidthChanged(float _new_width)
-	{
-		_gui_width = _new_width;
-	}
+	//public void MenuWidthChanged(float _new_width)
+	//{
+	//	_gui_width = _new_width;
+	//}
 
-    public void MenuHeightChanged(float _new_height)
-    {
-        _gui_height = _new_height;
-    }
+ //   public void MenuHeightChanged(float _new_height)
+ //   {
+ //       _gui_height = _new_height;
+ //   }
 }

@@ -10,8 +10,8 @@ public class UIManager : MonoBehaviour, IUIManager
     public static UIManager main;
 
     //Width of GUI menu
-    private float m_GuiWidth;
-    private float m_GuiHeight;
+    //private float m_GuiWidth;
+    //private float m_GuiHeight;
 
     //Action Variables
     private HoverOver hoverOver = HoverOver.Land;
@@ -75,8 +75,8 @@ public class UIManager : MonoBehaviour, IUIManager
         eventsManager.ScreenEdgeMousePosition += MouseAtScreenEdgeHandler;
 
         //Attach gui width changed event	
-        GUIEvents.MenuWidthChanged += MenuWidthChanged;
-        GUIEvents.MenuHeightChanged += MenuHeightChanged;
+        //GUIEvents.MenuWidthChanged += MenuWidthChanged;
+        //GUIEvents.MenuHeightChanged += MenuHeightChanged;
 
         //Loader.main.FinishedLoading (this);
     }
@@ -106,7 +106,7 @@ public class UIManager : MonoBehaviour, IUIManager
         hoverOver = HoverOver.Land;
         InteractionState interactionState = InteractionState.Nothing;
        //Are we hovering over the GUI or the main screen?
-        if (Input.mousePosition.x < Screen.width - (GUIManager._is_right_menu_shown ? m_GuiWidth : 0) && Input.mousePosition.y > Screen.height - (Screen.height - (GUIManager._is_construction_shown ? m_GuiHeight : 0)))
+        if (Input.mousePosition.x < Screen.width - (GUIManager._is_right_menu_shown ? 178 : 0) && Input.mousePosition.y > Screen.height - (Screen.height - (GUIManager._data._is_construction_shown ? 178 : 0)))
         {
             //We're over the main screen, let's raycast
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -340,7 +340,7 @@ public class UIManager : MonoBehaviour, IUIManager
     private void ButtonClickedHandler(object sender, MouseEventArgs e)
     {
         //If mouse is over GUI then we don't want to process the button clicks
-        if (e.X < Screen.width - (GUIManager._is_right_menu_shown ? m_GuiWidth : 0) && e.Y > Screen.height - (Screen.height - (GUIManager._is_construction_shown ? m_GuiHeight : 0)))
+        if (e.X < Screen.width - (GUIManager._is_right_menu_shown ? 178 : 0) && e.Y > Screen.height - (Screen.height - (GUIManager._data._is_construction_shown ? 178 : 0)))
         {
             e.Command();
         }
@@ -354,17 +354,20 @@ public class UIManager : MonoBehaviour, IUIManager
         {
             case Mode.Normal:
                 //We've left clicked, what have we left clicked on?
+                if (currentObject != null)
+                { 
                 int currentObjLayer = currentObject.layer;
 
-                if (currentObjLayer == 8)
-                {
-                    //Friendly Unit, is the unit selected?
-                    if (m_SelectedManager.IsObjectSelected(currentObject))
+                    if (currentObjLayer == 8)
                     {
-                        //Is the unit deployable?
-                        if (currentObject.GetComponent<Unit>().IsDeployable())
+                        //Friendly Unit, is the unit selected?
+                        if (m_SelectedManager.IsObjectSelected(currentObject))
                         {
-                            currentObject.GetComponent<Unit>().GiveOrder(Orders.CreateDeployOrder());
+                            //Is the unit deployable?
+                            if (currentObject.GetComponent<Unit>().IsDeployable())
+                            {
+                                currentObject.GetComponent<Unit>().GiveOrder(Orders.CreateDeployOrder());
+                            }
                         }
                     }
                 }
@@ -425,12 +428,19 @@ public class UIManager : MonoBehaviour, IUIManager
                 int currentObjLayer = currentObject.layer;
                 if (!m_GuiManager.Dragging && (currentObjLayer == 8 || currentObjLayer == 9 || currentObjLayer == 12 || currentObjLayer == 13))
                 {
-                    if (!IsShiftDown)
+                    //if (!IsShiftDown)
+                    //{
+                    //    m_SelectedManager.DeselectAll();
+                    //}
+                    switch (currentObject.GetComponent<RTSObject>().name)
                     {
-                        m_SelectedManager.DeselectAll();
+                        case "Selena":
+                            currentObject.GetComponent<RTSObject>().Type = "Selena";
+                            currentObject.GetComponent<RTSObject>().Name = "Selena";
+                            currentObject.GetComponent<RTSObject>().Faction = Item.Factions.Faction1;
+                            break;
                     }
-
-                    m_SelectedManager.AddObject(currentObject.GetComponent<RTSObject>());
+                    //m_SelectedManager.AddObject(currentObject.GetComponent<RTSObject>());
                 }
                 else if (!m_GuiManager.Dragging)
                 {
@@ -445,6 +455,21 @@ public class UIManager : MonoBehaviour, IUIManager
                 }
                 break;
         }
+    }
+
+    public void LightsOn()
+    {
+        m_SelectedManager.GiveOrder(Orders.CreateLightingOrder(4));
+    }
+
+    public void LightsOff()
+    {
+        m_SelectedManager.GiveOrder(Orders.CreateLightingOrder(5));
+    }
+
+    public void LightsAuto()
+    {
+        m_SelectedManager.GiveOrder(Orders.CreateLightingOrder(6));
     }
 
     public void RightButton_SingleClick(MouseEventArgs e)
@@ -508,15 +533,15 @@ public class UIManager : MonoBehaviour, IUIManager
     private void ScrollWheelHandler(object sender, ScrollWheelEventArgs e)
     {
         //Zoom In/Out
-        m_Camera.Zoom(sender, e);
-        m_MiniMapController.ReCalculateViewRect();
+        //m_Camera.Zoom(sender, e);
+        //m_MiniMapController.ReCalculateViewRect();
     }
 
     private void MouseAtScreenEdgeHandler(object sender, ScreenEdgeEventArgs e)
     {
         //Pan
-        m_Camera.Pan(sender, e);
-        m_MiniMapController.ReCalculateViewRect();
+        //m_Camera.Pan(sender, e);
+        //m_MiniMapController.ReCalculateViewRect();
     }
 
     //-----------------------------------KeyBoard Handler---------------------------------
@@ -531,15 +556,15 @@ public class UIManager : MonoBehaviour, IUIManager
         return currentObject == obj.gameObject;
     }
 
-    public void MenuWidthChanged(float newWidth)
-    {
-        m_GuiWidth = newWidth;
-    }
+    //public void MenuWidthChanged(float newWidth)
+    //{
+    //    m_GuiWidth = newWidth;
+    //}
 
-    public void MenuHeightChanged(float newHeight)
-    {
-        m_GuiHeight = newHeight;
-    }
+    //public void MenuHeightChanged(float newHeight)
+    //{
+    //    m_GuiHeight = newHeight;
+    //}
 
     public void UserPlacingBuilding(Item item, Action callbackFunction)
     {
@@ -589,6 +614,7 @@ public enum HoverOver
 {
     Menu,
     Land,
+    Air,
     FriendlyUnit,
     EnemyUnit,
     FriendlyBuilding,

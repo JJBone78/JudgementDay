@@ -22,8 +22,8 @@ public class Selected : MonoBehaviour {
 	
 	private float m_OverlayWidth = 0;
 	private float m_OverlayLength = 0;
-    private float m_MainMenuWidth;
-    private float m_MainMenuHeight;
+    //private float m_MainMenuWidth;
+    //private float m_MainMenuHeight;
 
     private Vector3 m_WorldExtents;
 	
@@ -35,20 +35,25 @@ public class Selected : MonoBehaviour {
 		IsSelected = false;
 		FindMaxWorldSize();
 
-        m_MainMenuWidth = ManagerResolver.Resolve<IGUIManager>().MainMenuWidth;
-        m_MainMenuHeight = ManagerResolver.Resolve<IGUIManager>().MainMenuHeight;
+        //m_MainMenuWidth = ManagerResolver.Resolve<IGUIManager>().MainMenuWidth;
+        //m_MainMenuHeight = ManagerResolver.Resolve<IGUIManager>().MainMenuHeight;
 
         m_GLManager = ManagerResolver.Resolve<IGLManager>();
 		m_GLMat = GLMatShader.GetGLMaterial ();
 		m_GLItem = new GLItem(GLExecuteFunction);
 		
 		//If this unit is land based subscribe to the path changed event
-		LandMovement landMovement = GetComponent<LandMovement>();
-		if (landMovement != null)
+		LandMovement _land_movement = GetComponent<LandMovement>();
+		if (_land_movement != null)
 		{
-			landMovement.PathChangedEvent += PathChanged;
+            _land_movement.PathChangedEvent += PathChanged;
 		}
-	}
+        AirMovement _air_movement = GetComponent<AirMovement>();
+        if (_air_movement != null)
+        {
+            _air_movement.PathChangedEvent += PathChanged;
+        }
+    }
 	
 	// Update is called once per frame
 	void Update () 
@@ -108,7 +113,7 @@ public class Selected : MonoBehaviour {
 	{
 		if (IsSelected)
 		{
-			if (OverlayRect.xMax < Screen.width-m_MainMenuWidth && OverlayRect.yMax < Screen.height - (GUIManager._is_construction_shown ? 197f : 0f))
+			if (OverlayRect.xMax < Screen.width - (GUIManager._is_right_menu_shown ? 178 : 0)  && OverlayRect.yMax < Screen.height - (GUIManager._data._is_construction_shown ? 197f : 0f))
 				GUI.DrawTexture (OverlayRect, Overlay); //draw border around selected units
 		}
 	}

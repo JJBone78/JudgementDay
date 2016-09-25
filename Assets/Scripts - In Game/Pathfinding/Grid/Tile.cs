@@ -284,8 +284,8 @@ public class Tile
 		Vector3 bottomRight = m_Center + new Vector3(halfSize, 0, -halfSize);
 		Vector3 topRight = m_Center + new Vector3(halfSize, 0, halfSize);
 		Vector3 topLeft = m_Center + new Vector3(-halfSize, 0, halfSize);
-		
-		float startOffset = 5.0f;
+
+	    float startOffset = 0f;//5.0f;
 		
 		Ray rayUp = new Ray(m_Center + (Vector3.down*startOffset), Vector3.up);
 		Ray rayUp2 = new Ray(bottomLeft + (Vector3.down*startOffset), Vector3.up);

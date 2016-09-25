@@ -3,12 +3,47 @@ using System.Collections;
 
 public abstract class RTSObject : MonoBehaviour {
 
-	//The base class for all playable objects
-	
-	public string Name
+    //The base class for all playable objects
+
+    public float Speed
+    {
+        get;
+        set;
+    }
+    public float Health
+    {
+        get;
+        set;
+    }
+
+    public float Armour
+    {
+        get;
+        set;
+    }
+
+    public float Damage
+    {
+        get;
+        set;
+    }
+
+    public string Type
+    {
+        get;
+        set;
+    }
+
+    public Item.Factions Faction
+    {
+        get;
+        set;
+    }
+
+    public string Name
 	{
 		get;
-		private set;
+		set;
 	}
 	
 	public int ID
@@ -55,9 +90,17 @@ public abstract class RTSObject : MonoBehaviour {
 		TeamIdentifier = item.TeamIdentifier;
 		m_MaxHealth = item.Health;
 		m_Health = m_MaxHealth;
-	}
-	
-	public void TakeDamage(float damage)
+	    Faction = item.Faction;
+	    Type = item.Type;
+	    Health = item.Health;
+	    Armour = item.Armour;
+        Damage = item.Damage;
+        Speed = item.Speed;
+
+
+    }
+
+    public void TakeDamage(float damage)
 	{
 		m_Health -= damage;
 	}
